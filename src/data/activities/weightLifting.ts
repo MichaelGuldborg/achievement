@@ -93,6 +93,7 @@ export const weightLifting: Activity = {
         }]
     }],
     material: []
+
 }
 
 export default weightLifting
