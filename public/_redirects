@@ -1,0 +1,10 @@
+# For Single Page Application
+/*    /index.html   200
+
+# For staging
+# https://staging--dikom-web.netlify.app  https://staging.app.dikom.dk    301
+
+# For production
+# https://dikom.dk            https://app.dikom.dk    301
+# https://www.dikom.dk        https://app.dikom.dk    301
+# https://www.app.dikom.dk    https://app.dikom.dk    301
