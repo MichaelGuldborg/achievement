@@ -4,6 +4,7 @@ import {randomId} from "../../lib/math/randomId";
 export const weightLifting: Activity = {
     id: randomId(),
     name: 'Weight Lifting',
+    material: [],
     levels: [{
         id: randomId(),
         name: 'Beginner',
@@ -92,8 +93,6 @@ export const weightLifting: Activity = {
             isCompleted: true,
         }]
     }],
-    material: []
-
 }
 
 export default weightLifting

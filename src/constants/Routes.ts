@@ -15,6 +15,7 @@ class Routes {
     // dashboard
     static readonly home = '/home';
     static readonly activity = '/home/activity/:activityId';
+    static readonly challenge30Day = '/home/challenge/30-day';
 
 
     static readonly profile = '/home/profile';

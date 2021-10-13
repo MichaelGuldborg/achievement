@@ -7,6 +7,17 @@ export const climbing: Activity = {
     imageUrl: 'https://wallpapercave.com/wp/wp1871769.jpg',
     // imageUrl: 'https://wallpapercave.com/wp/wp1871760.jpg',
     // imageUrl: 'https://wallpapercave.com/wp/wp1871756.jpg',
+    material: [{
+        id: randomId(),
+        name: 'YouTube climbing videos',
+        type: 'youtube',
+        url: 'https://www.youtube.com/results?search_query=bouldering',
+    }, {
+        id: randomId(),
+        name: 'Free solo',
+        type: 'movie',
+        url: 'https://www.imdb.com/title/tt7775622/?ref_=fn_al_tt_1'
+    }],
     levels: [{
         id: randomId(),
         name: 'Beginner',
@@ -44,17 +55,6 @@ export const climbing: Activity = {
             description: 'Complete a boulder graded 7a or higher',
             isCompleted: false,
         }],
-    }],
-    material: [{
-        id: randomId(),
-        name: 'YouTube climbing videos',
-        type: 'youtube',
-        url: 'https://www.youtube.com/results?search_query=bouldering',
-    }, {
-        id: randomId(),
-        name: 'Free solo',
-        type: 'movie',
-        url: 'https://www.imdb.com/title/tt7775622/?ref_=fn_al_tt_1'
     }]
 }
 
