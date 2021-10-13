@@ -24,6 +24,7 @@ export const climbing: Activity = {
         challenges: [{
             id: randomId(),
             name: '30 days on the wall',
+            type: '30-day',
             description: 'Complete a total of 30 days climbing. This can be done by completing any type of climbing session including anything from casual indoor bouldering to outdoor lead climbing',
             isCompleted: true,
         }, {

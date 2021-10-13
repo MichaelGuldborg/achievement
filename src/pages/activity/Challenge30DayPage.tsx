@@ -7,13 +7,16 @@ import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import PopoverDatePicker from "../../components/pickers/PopoverDatePicker";
 import {toLocalDateMothYearString} from "../../lib/date/toLocalISO";
+import {addDays} from "date-fns";
 
 
 export const Challenge30DayPage = () => {
 
 
+    const now = new Date()
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [date, setDate] = useState(new Date());
+    const [isDateEnabled, setIsDateEnabled] = useState<boolean>(false)
 
     return (
         <div style={{
@@ -43,8 +46,10 @@ export const Challenge30DayPage = () => {
                             {Array.from({length: 3}).map((_, i) => {
                                 return <div style={{display: 'flex'}}>
                                     {Array.from({length: 10}).map((_, j) => {
-                                        const index = i * 10 + j + 1;
-                                        const checked = selectedIndex >= index;
+                                        const index = i * 10 + j;
+                                        const indexLabel = index + 1
+                                        const checked = selectedIndex > index;
+                                        const indexDate = addDays(date, index);
                                         return <div
                                             style={{
                                                 flex: 1,
@@ -56,12 +61,12 @@ export const Challenge30DayPage = () => {
                                                 size={"medium"}
                                                 checked={checked}
                                                 onChange={() => {
-                                                    const nextIndex = checked ? index - 1 : index;
+                                                    const nextIndex = checked ? index : index + 1;
                                                     setSelectedIndex(nextIndex);
                                                 }}
                                             />
                                             <span style={{fontSize: 18, fontWeight: 600}}>
-                                                {index}
+                                                {isDateEnabled ? `${indexDate.getDate()}/${indexDate.getMonth() + 1}` : index}
                                             </span>
                                         </div>
                                     })}
@@ -81,14 +86,21 @@ export const Challenge30DayPage = () => {
                                     justifyContent: 'space-between'
                                 }}>
                                     <span>Use date</span>
-                                    <Switch/>
+                                    <Switch
+                                        checked={isDateEnabled}
+                                        onChange={(e, c) => setIsDateEnabled(c)}
+                                    />
                                 </div>
 
                                 <PopoverDatePicker value={date} onChange={(d) => {
                                     if (!d) return;
                                     setDate(new Date(d.getTime()));
                                 }}>
-                                    <Button variant={"outlined"} style={{marginBottom: 16, padding: 8}}>
+                                    <Button
+                                        variant={"outlined"}
+                                        style={{marginBottom: 16, padding: 8}}
+                                        disabled={!isDateEnabled}
+                                    >
                                         {toLocalDateMothYearString(date)}
                                     </Button>
                                 </PopoverDatePicker>

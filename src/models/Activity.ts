@@ -22,6 +22,7 @@ export interface ActivityLevel {
 export interface Challenge {
     id: string;
     name: string;
+    type?: '30-day'
     description: string;
     isCompleted?: boolean;
 }
