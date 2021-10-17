@@ -86,8 +86,10 @@ export const CrudDialog = <T extends Partial<Identifiable>, >({children, title, 
                             setDeleteElement(element);
                             handleClickOpen();
                         }}>
-                            <DeleteBin7LineIcon style={{marginRight: '4px', color: theme.palette.error.main}}/>
-                            SLET
+                            <div style={{display: 'flex', alignItems: 'start', textAlign: 'center'}}>
+                                <DeleteBin7LineIcon size={18} style={{marginRight: '6px'}}/>
+                                Delete
+                            </div>
                         </Button>
                     )}
                     <Box flex={1}/>
@@ -96,17 +98,23 @@ export const CrudDialog = <T extends Partial<Identifiable>, >({children, title, 
                             onCopyClick(element)
                             onCancel()
                         }}>
-                            <CopyIcon style={{marginRight: '4px'}}/>
-                            Kopier
+                            <div style={{display: 'flex', alignItems: 'start', textAlign: 'center'}}>
+                                <CopyIcon size={20} style={{marginRight: '4px'}}/>
+                                Kopier
+                            </div>
                         </Button>
                     )}
                     <Button onClick={onCancel}>
-                        <CloseLineIcon style={{marginRight: '4px', color: theme.palette.error.main}}/>
-                        ANNULLER
+                        <div style={{display: 'flex', alignItems: 'start', textAlign: 'center'}}>
+                            <CloseLineIcon size={20} style={{marginRight: '4px', color: theme.palette.error.main}}/>
+                            ANNULLER
+                        </div>
                     </Button>
                     <Button onClick={handleSaveClick}>
-                        <CheckLineIcon style={{marginRight: '4px', color: theme.palette.success.main}}/>
-                        GEM
+                        <div style={{display: 'flex', alignItems: 'start', textAlign: 'center'}}>
+                            <CheckLineIcon size={20} style={{marginRight: '4px', color: theme.palette.success.main}}/>
+                            Save
+                        </div>
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -116,15 +124,15 @@ export const CrudDialog = <T extends Partial<Identifiable>, >({children, title, 
             >
                 <DialogContent>
                     <DialogContentText>
-                        Du er ved at slette dette element. Er du sikker på at dette er den ønskede handling?
+                        Are you sure you want to delete this element?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClickClose} color="primary">
-                        Nej
+                        No
                     </Button>
                     <Button onClick={handleClickAccept} color="primary" autoFocus>
-                        Ja
+                        Yes
                     </Button>
                 </DialogActions>
             </Dialog>

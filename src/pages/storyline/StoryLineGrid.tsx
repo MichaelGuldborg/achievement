@@ -1,30 +1,69 @@
 import React, {useState} from "react";
 import {StoryLineEntry} from "./StoryLinePage";
 import {Popover} from "@material-ui/core";
+import theme from "../../constants/theme";
+import ArrowRightLineIcon from "remixicon-react/ArrowRightLineIcon";
+import ArrowDownLineIcon from "remixicon-react/ArrowDownLineIcon";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 
 const weekMillis = 604800000;
+const blockSize = 16;
+const rows = 90;
+const columns = 52;
+
+const useStyles = makeStyles((theme) => ({
+    block: {
+        width: blockSize,
+        height: blockSize,
+        borderRadius: 1,
+        boxSizing: 'border-box',
+        // backgroundColor: color ?? '#e0e0e0',
+        // opacity: isPast ? 0.4 : 1,
+        // border: index === popover.index ? '2px solid black' : undefined,
+        // boxShadow: '0 4px 6px ' + fade(theme.palette.primary.main, 0.25),
+        // transition: theme.transitions.create(['background-color', 'box-shadow']),
+        "&:hover": {
+            // cursor: 'pointer',
+            border: '2px solid black',
+            // background: fade(theme.palette.grey.A400, 1),
+            // boxShadow: '0px 0px 8px ' + fade(theme.palette.grey.A400, 0.3),
+        }
+    }
+
+}))
 
 export const StoryLineGrid: React.FC<{
+    entries: StoryLineEntry[];
+    onClick?: (index: number) => void
     skip?: number;
     take?: number;
     birthDate?: Date;
-    entries: StoryLineEntry[];
+    selectedWeek?: number;
+    hoverColor?: string;
 }> = (
     {
         entries,
+        onClick,
         skip,
         take,
-        birthDate
+        birthDate,
+        selectedWeek,
+        hoverColor,
     }
 ) => {
+    const classes = useStyles();
     const now = new Date();
-    const blockSize = 16;
-    const rows = 90;
-    const columns = 52;
+
 
     const birthDateWeeks = Math.floor((now.getTime() - (birthDate?.getTime() ?? 0)) / weekMillis);
-    const weekColors = entries.map((e) => Array(e.weeks).fill(e.color)).flat()
+    // const weekColors = entries.map((e) => Array(e.weeks).fill(e.color)).flat()
+    const weekColors = entries.reduce((result, e) => {
+        Array(e.end - e.start).fill(undefined).forEach((_, i) => {
+            result[e.start + i] = e.color;
+        })
+        return result;
+    }, Array(90 * 52).fill(undefined));
 
 
     const [popover, setPopover] = useState({
@@ -55,7 +94,7 @@ export const StoryLineGrid: React.FC<{
                         pointerEvents: 'none',
                         marginLeft: 12
                     }}
-                    open={Boolean(popover.anchorEl)}
+                    open={Boolean(popover.anchorEl) && Boolean(popoverEntry)}
                     anchorEl={popover.anchorEl}
                     anchorOrigin={{
                         vertical: 'top',
@@ -70,6 +109,19 @@ export const StoryLineGrid: React.FC<{
                         {popoverEntry?.name}
                     </div>
                 </Popover>
+
+                <div style={{
+                    color: theme.palette.grey["500"],
+                    fontSize: 18,
+                }}>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <ArrowDownLineIcon/>
+                        <span style={{marginLeft: 8}}>Number of years</span>
+                        <div style={{width: 16}}/>
+                        <ArrowRightLineIcon/>
+                        <span style={{marginLeft: 8}}>Week of the year</span>
+                    </div>
+                </div>
 
                 <div>
                     <div style={{
@@ -99,7 +151,7 @@ export const StoryLineGrid: React.FC<{
                 {Array.from({length: rows}).map((_, i) => {
                     if (!!skip && skip > i) return <div/>
                     if (!!skip && !!take && skip + take < i) return <div/>
-                    return <div>
+                    return <div style={{display: 'flex'}}>
                         <div style={{
                             display: 'inline-block',
                             overflow: 'hidden',
@@ -116,26 +168,38 @@ export const StoryLineGrid: React.FC<{
                         {Array.from({length: columns}).map((_, j) => {
                             const index = i * columns + j
                             const isPast = birthDateWeeks - index > 0;
-                            const color = weekColors[index];
+                            let color = weekColors[index] ?? '#e0e0e0';
+
+                            if (selectedWeek !== undefined) {
+                                const hoverIndex = (popover.index === null ? selectedWeek : popover.index) as unknown as number;
+                                if (selectedWeek <= index && hoverIndex >= index) {
+                                    color = hoverColor
+                                }
+                                if (selectedWeek >= index && hoverIndex <= index) {
+                                    color = hoverColor
+                                }
+                            }
+
                             return <div
                                 style={{
                                     display: 'inline-block',
-                                    width: blockSize,
-                                    height: blockSize,
-                                    marginRight: 8,
-                                    backgroundColor: color ?? '#e0e0e0',
-                                    opacity: isPast ? 0.4 : 1,
-                                    // borderRadius: 100,
-                                    borderRadius: 1,
-                                    border: index === popover.index ? '2px solid black' : undefined,
-                                    boxSizing: 'border-box',
+                                    padding: 4,
+                                    cursor: onClick ? 'pointer' : undefined
                                 }}
                                 onMouseLeave={handlePopoverClose}
                                 onMouseEnter={(e) => {
-                                    if (!color) return;
                                     handlePopoverOpen(e, index);
                                 }}
-                            />
+                            >
+                                <div
+                                    className={classes.block}
+                                    onClick={() => onClick?.(index)}
+                                    style={{
+                                        backgroundColor: color,
+                                        opacity: isPast ? 0.4 : 1,
+                                    }}
+                                />
+                            </div>
                         })}
                     </div>
                 })}
