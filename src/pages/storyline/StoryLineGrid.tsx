@@ -38,6 +38,7 @@ export const StoryLineGrid: React.FC<{
         })
     }
     const handlePopoverClose = () => {
+        if (popover.anchorEl === null) return;
         setPopover({
             index: null,
             anchorEl: null,
@@ -115,23 +116,25 @@ export const StoryLineGrid: React.FC<{
                         {Array.from({length: columns}).map((_, j) => {
                             const index = i * columns + j
                             const isPast = birthDateWeeks - index > 0;
+                            const color = weekColors[index];
                             return <div
                                 style={{
                                     display: 'inline-block',
                                     width: blockSize,
                                     height: blockSize,
                                     marginRight: 8,
-                                    backgroundColor: weekColors[index] ?? '#e0e0e0',
+                                    backgroundColor: color ?? '#e0e0e0',
                                     opacity: isPast ? 0.4 : 1,
                                     // borderRadius: 100,
                                     borderRadius: 1,
                                     border: index === popover.index ? '2px solid black' : undefined,
                                     boxSizing: 'border-box',
                                 }}
+                                onMouseLeave={handlePopoverClose}
                                 onMouseEnter={(e) => {
+                                    if (!color) return;
                                     handlePopoverOpen(e, index);
                                 }}
-                                onMouseLeave={handlePopoverClose}
                             />
                         })}
                     </div>

@@ -8,6 +8,13 @@ import {DatePicker} from "@material-ui/pickers";
 import StoryLinePresetButton from "./StoryLinePresetButton";
 import storyLines from "../../data/storyLines";
 import StoryLineGrid from "./StoryLineGrid";
+import Button from "@material-ui/core/Button";
+
+export interface StoryLine {
+    id: string;
+    name: string;
+    entries: StoryLineEntry[];
+}
 
 export interface StoryLineEntry {
     id: string;
@@ -25,23 +32,21 @@ export const StoryLinePage = () => {
     const [birthDate, setBirthDate] = useState(new Date())
     const [skip, setSkip] = useState(0)
     const [take, setTake] = useState(0)
-    const [entries, setEntries] = useState(storyLines[0].entries)
+    const [storyLine, setStoryLine] = useState(storyLines[0])
 
 
-    const onMove = useCallback(
-        (dragIndex: number, hoverIndex: number) => {
-            const entry = entries[dragIndex]
-            setEntries(
-                update(entries, {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, entry],
-                    ],
-                }),
-            )
-        },
-        [entries],
-    )
+    const onMove = useCallback((dragIndex: number, hoverIndex: number) => {
+        const entry = storyLine.entries[dragIndex]
+        setStoryLine({
+            ...storyLine,
+            entries: update(storyLine.entries, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, entry],
+                ],
+            })
+        })
+    }, [storyLine])
 
     return (
         <div style={{
@@ -85,15 +90,28 @@ export const StoryLinePage = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <StoryLinePresetButton
-                                        onSelect={(e) => setEntries(e.entries)}
+                                        onSelect={(e) => setStoryLine(e)}
                                     />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button
+                                        variant={"outlined"}
+                                        fullWidth
+                                        onClick={() => setStoryLine({
+                                            ...storyLine,
+                                            entries: [],
+                                        })}
+                                    >
+                                        Reset
+                                    </Button>
+
                                 </Grid>
                             </Grid>
 
                         </Paper>
 
                         <List>
-                            {entries.map((e, i) => {
+                            {storyLine.entries.map((e, i) => {
                                 return <StoryLineEntryCard
                                     id={e.id}
                                     text={e.name}
@@ -112,7 +130,7 @@ export const StoryLinePage = () => {
                             birthDate={birthDate}
                             skip={skip}
                             take={take}
-                            entries={entries}
+                            entries={storyLine.entries}
                         />
                     </Grid>
 

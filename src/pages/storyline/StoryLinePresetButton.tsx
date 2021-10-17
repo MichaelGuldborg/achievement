@@ -2,11 +2,11 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import {StoryLineEntry} from "./StoryLinePage";
+import {StoryLine} from "./StoryLinePage";
 import storyLines from "../../data/storyLines";
 
 export const StoryLinePresetButton: React.FC<{
-    onSelect: (preset: { entries: StoryLineEntry[] }) => void;
+    onSelect: (preset: StoryLine) => void;
 }> = ({onSelect}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -36,10 +36,12 @@ export const StoryLinePresetButton: React.FC<{
             >
                 {storyLines.map((e) => {
                     return (
-                        <MenuItem onClick={() => {
-                            onSelect(e)
-                            handleClose()
-                        }}>
+                        <MenuItem
+                            style={{minWidth: 160}}
+                            onClick={() => {
+                                onSelect(e)
+                                handleClose()
+                            }}>
                             {e.name}
                         </MenuItem>
                     )
