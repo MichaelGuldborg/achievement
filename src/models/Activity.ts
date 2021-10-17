@@ -2,9 +2,21 @@ export interface Activity {
     id: string;
     name: string;
     imageUrl?: string;
+    tags?: ActivityTag[],
+    material?: ActivityMaterial[]
     levels: ActivityLevel[]
-    material: ActivityMaterial[]
 }
+
+export type ActivityTag =
+    'physical'
+    | 'sport'
+    | 'food'
+    | 'dance'
+    | 'musical'
+    | 'language'
+    | 'spiritual'
+    | 'game'
+    | 'creativity';
 
 interface ActivityMaterial {
     id: string;
@@ -28,6 +40,7 @@ export interface Challenge {
 }
 
 export const getMaxCompletedLevel = (a: Activity) => {
+    if (a.levels === undefined) return 0;
     for (let i = 0; i < a.levels.length; i++) {
         if (!isLevelComplete(a.levels[i])) {
             return i;

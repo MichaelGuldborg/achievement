@@ -116,7 +116,7 @@ export const ActivityPage = () => {
                     <Grid item xs={3}>
                         <div style={{display: 'flex', flexDirection: 'column'}}>
                             <h3 style={{marginTop: 0}}>Material</h3>
-                            {activity.material.map((e, index) => {
+                            {activity.material?.map((e, index) => {
                                 return <ListItem
                                     button
                                     onClick={() => window.open(e.url, "_blank")}

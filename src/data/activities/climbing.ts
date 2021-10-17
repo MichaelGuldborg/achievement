@@ -7,6 +7,7 @@ export const climbing: Activity = {
     imageUrl: 'https://wallpapercave.com/wp/wp1871769.jpg',
     // imageUrl: 'https://wallpapercave.com/wp/wp1871760.jpg',
     // imageUrl: 'https://wallpapercave.com/wp/wp1871756.jpg',
+    tags: ["physical"],
     material: [{
         id: randomId(),
         name: 'YouTube climbing videos',

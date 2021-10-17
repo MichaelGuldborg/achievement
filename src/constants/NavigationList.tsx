@@ -7,6 +7,7 @@ import HomeLineIcon from "remixicon-react/HomeLineIcon";
 import HomeLandingPage from "../pages/home_landing/HomeLandingPage";
 import ActivityPage from "../pages/activity/ActivityPage";
 import Challenge30DayPage from "../pages/activity/Challenge30DayPage";
+import StoryLinePage from "../pages/storyline/StoryLinePage";
 
 export interface ActionNavItem {
     name: string;
@@ -47,6 +48,12 @@ export const navigationList: NavItem[] = [
         icon: HomeLineIcon,
         path: Routes.challenge30Day,
         component: Challenge30DayPage,
+    },
+    {
+        name: "Storyline",
+        icon: HomeLineIcon,
+        path: Routes.storyline,
+        component: StoryLinePage,
     },
     {
         name: "Home",

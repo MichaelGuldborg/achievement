@@ -4,6 +4,8 @@ import {randomId} from "../../lib/math/randomId";
 export const weightLifting: Activity = {
     id: randomId(),
     name: 'Weight Lifting',
+    imageUrl: 'https://nodokter.com/wp-content/uploads/2021/03/dumbell-iStock-1-1024x576.jpg',
+    tags: ["physical"],
     material: [],
     levels: [{
         id: randomId(),

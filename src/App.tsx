@@ -12,6 +12,8 @@ import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from 'react-query/devtools'
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import {HTML5Backend} from "react-dnd-html5-backend";
+import {DndProvider} from "react-dnd";
 
 const queryClient = new QueryClient();
 
@@ -21,28 +23,31 @@ function App() {
             <QueryClientProvider client={queryClient}>
                 <ThemeProvider<CustomTheme> theme={theme}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <Router history={history}>
-                            <Switch>
-                                {/*AUTH*/}
-                                {/*<Route exact path={Routes.landing} component={HomePage}/>*/}
-                                {/*<Route path={Routes.resetPassword} component={ResetPasswordPage}/>*/}
-                                {/*<Route path={Routes.register} component={RegisterUserPage}/>*/}
+                        <DndProvider backend={HTML5Backend}>
 
-                                {/*HOME*/}
-                                <Route path={Routes.home} component={HomePage}/>
+                            <Router history={history}>
+                                <Switch>
+                                    {/*AUTH*/}
+                                    {/*<Route exact path={Routes.landing} component={HomePage}/>*/}
+                                    {/*<Route path={Routes.resetPassword} component={ResetPasswordPage}/>*/}
+                                    {/*<Route path={Routes.register} component={RegisterUserPage}/>*/}
 
-
-                                {/*ERROR*/}
-                                <Route path={Routes.error} component={ErrorPage}/>
-                                <Route path={Routes.test} component={TestPage}/>
+                                    {/*HOME*/}
+                                    <Route path={Routes.home} component={HomePage}/>
 
 
-                                <Route path={Routes.landing}>
-                                    <Redirect to={Routes.home}/>
-                                </Route>
-                                <Route path="*" component={NotFoundPage}/>
-                            </Switch>
-                        </Router>
+                                    {/*ERROR*/}
+                                    <Route path={Routes.error} component={ErrorPage}/>
+                                    <Route path={Routes.test} component={TestPage}/>
+
+
+                                    <Route path={Routes.landing}>
+                                        <Redirect to={Routes.home}/>
+                                    </Route>
+                                    <Route path="*" component={NotFoundPage}/>
+                                </Switch>
+                            </Router>
+                        </DndProvider>
                     </MuiPickersUtilsProvider>
                 </ThemeProvider>
                 <ReactQueryDevtools initialIsOpen={false}/>
