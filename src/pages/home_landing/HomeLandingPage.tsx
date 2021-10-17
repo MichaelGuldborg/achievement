@@ -20,10 +20,9 @@ import ActivityCard from "./ActivityCard";
 // Story line
 // [x] Show main story line in a 90 year week view
 // [x] Crud form to make custom storyline
-// [ ] Select and color the calendar with events
-// [ ] Drag event to different position
+// [x] Select weeks instead of input number
+// [x] Fix edit function using randomId()
 // [ ] Sort entries by start time in list
-// [ ] Fix edit function using randomId()
 
 
 // TODO
