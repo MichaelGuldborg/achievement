@@ -49,9 +49,7 @@ const ExplorePage = () => {
                     <h1>Explore plans</h1>
                     <div
                         style={{
-                            background: 'red',
                             height: 250
-
                         }}
                     >
 
@@ -60,7 +58,6 @@ const ExplorePage = () => {
                     <h1>Top rated users</h1>
                     <div
                         style={{
-                            background: 'red',
                             height: 100
 
                         }}
