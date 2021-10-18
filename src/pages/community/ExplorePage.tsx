@@ -37,8 +37,19 @@ const ExplorePage = () => {
                             alignItems: 'center',
                         }}
                     >
-                        <div style={{paddingLeft: 16, marginTop: 2}}>
-                            <Search2LineIcon color='#F57058'/>
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: '#F57058',
+                                width: 40,
+                                height: 40,
+                                marginLeft: 6,
+                                borderRadius: '100%'
+                            }}
+                        >
+                            <Search2LineIcon size={20} color='white'/>
                         </div>
                     </div>
                 </Container>
