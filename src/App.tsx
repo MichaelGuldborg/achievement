@@ -14,6 +14,7 @@ import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
+import CommunityPage from "./pages/community/CommunityPage";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,8 @@ function App() {
                                     {/*<Route exact path={Routes.landing} component={HomePage}/>*/}
                                     {/*<Route path={Routes.resetPassword} component={ResetPasswordPage}/>*/}
                                     {/*<Route path={Routes.register} component={RegisterUserPage}/>*/}
+
+                                    <Route path="/nicolai" component={CommunityPage}/>
 
                                     {/*HOME*/}
                                     <Route path={Routes.home} component={HomePage}/>
