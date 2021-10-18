@@ -18,7 +18,7 @@ const HeaderNav = () => {
             right: 0,
             zIndex: 100,
             transition: 'all 0.2s ease',
-            boxShadow: scrollY > 0 ? 'rgb(0 0 0 / 10%) 0px 2px 2px' : 'none',
+            boxShadow: scrollY > 0 ? 'rgb(0 0 0 / 10%) 0px 2px 4px' : 'none',
             background: scrollY > 0 ? 'white' : 'transparent'
         }}>
             <Container maxWidth={false}>
@@ -74,14 +74,14 @@ const HeaderNav = () => {
                                         marginRight: 8,
                                         color: 'black'
                                     }}>
-                                    Nicolai Lassen
+                                    NicolaiLassen
                                     </span>
                                 <span style={{
                                     fontSize: 12,
                                     marginRight: 8,
                                     color: 'grey'
                                 }}>
-                                    nicolai@innosocial.dk
+                                    Rating 1
                                     </span>
                             </Box>
                             <IconButton
@@ -114,7 +114,7 @@ const HeaderNav = () => {
                                     cursor: 'pointer'
                                 }}
                             >
-                                <ArrowDownSLineIcon size={16} color='black'/>
+                                <ArrowDownSLineIcon size={14} color='black'/>
                             </div>
                         </Box>
                     </Link>

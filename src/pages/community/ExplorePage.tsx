@@ -9,7 +9,7 @@ const ExplorePage = () => {
         <div>
             <div
                 style={{
-                    height: 450,
+                    height: 500,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -21,7 +21,7 @@ const ExplorePage = () => {
                 }}
             >
                 <Container maxWidth='sm'>
-                    <h1 style={{fontSize: 32, textAlign: 'center'}}>
+                    <h1 style={{fontSize: 32, marginBottom: 32, textAlign: 'center'}}>
                         Start building your life
                     </h1>
 
@@ -32,7 +32,6 @@ const ExplorePage = () => {
                             borderRadius: 32,
                             boxShadow: 'rgb(0 0 0 / 10%) 0px 4px 12px',
                             background: 'white',
-                            marginTop: 16,
                             display: 'flex',
                             alignItems: 'center',
                         }}
