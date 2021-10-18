@@ -74,7 +74,7 @@ const HeaderNav = () => {
                                         marginRight: 8,
                                         color: 'black'
                                     }}>
-                                    NicolaiLassen
+                                    NicolaiMTL
                                     </span>
                                 <span style={{
                                     fontSize: 12,
@@ -91,8 +91,8 @@ const HeaderNav = () => {
                             >
                                 <div
                                     style={{
-                                        height: 8,
-                                        width: 8,
+                                        height: 10,
+                                        width: 10,
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center'
@@ -103,7 +103,7 @@ const HeaderNav = () => {
                             </IconButton>
                             <div
                                 style={{
-                                    marginLeft: 4,
+                                    marginLeft: 8,
                                     background: 'rgba(0,0,0, 0.05)',
                                     height: 20,
                                     width: 20,
