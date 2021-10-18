@@ -9,7 +9,7 @@ const ExplorePage = () => {
         <div>
             <div
                 style={{
-                    height: 500,
+                    height: 450,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -20,14 +20,14 @@ const ExplorePage = () => {
                     position: 'relative'
                 }}
             >
-                <div>
+                <Container maxWidth='sm'>
                     <h1 style={{fontSize: 32, textAlign: 'center'}}>
                         Start building your life
                     </h1>
 
                     <div
                         style={{
-                            width: 700,
+                            width: '100%',
                             height: 54,
                             borderRadius: 32,
                             boxShadow: 'rgb(0 0 0 / 10%) 0px 4px 12px',
@@ -41,12 +41,12 @@ const ExplorePage = () => {
                             <Search2LineIcon color='#F57058'/>
                         </div>
                     </div>
-                </div>
+                </Container>
 
             </div>
             <div style={{paddingTop: 32, paddingBottom: 32}}>
                 <Container>
-                    <h1>Explore plans</h1>
+                    <h2>Explore</h2>
                     <div
                         style={{
                             height: 250
@@ -55,7 +55,7 @@ const ExplorePage = () => {
 
                     </div>
 
-                    <h1>Top rated users</h1>
+                    <h2>Top rated users</h2>
                     <div
                         style={{
                             height: 100
@@ -70,7 +70,7 @@ const ExplorePage = () => {
                             background: '#201C19',
                             height: 350,
                             borderRadius: 16,
-                            boxShadow: 'rgb(0 0 0 / 10%) 0px 4px 12px',
+                            boxShadow: 'rgb(0 0 0 / 10%) 0px 4px 12px'
                         }}
                     >
                         <div
@@ -79,7 +79,7 @@ const ExplorePage = () => {
                                 color: 'white'
                             }}
                         >
-                            <h1 style={{margin: 0}}>Start planning</h1>
+                            <h2 style={{margin: 0}}>Start building</h2>
                         </div>
 
                     </div>

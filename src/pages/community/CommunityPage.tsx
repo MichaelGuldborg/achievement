@@ -19,8 +19,7 @@ const CommunityPage = () => {
                 paddingTop: 32,
                 paddingBottom: 32,
             }}>
-                <Container maxWidth={false}>
-                    Footer
+                <Container>
                 </Container>
             </div>
         </div>
