@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import {Grid, TextField} from "@material-ui/core";
 import List from "@material-ui/core/List";
-import StoryLineEntryCard from "./StoryLineEntryCard";
+import LifeMapEntryCard from "./LifeMapEntryCard";
 import Paper from "@material-ui/core/Paper";
 import {DatePicker} from "@material-ui/pickers";
-import StoryLinePresetButton from "./StoryLinePresetButton";
-import storyLines from "../../data/storyLines";
-import StoryLineGrid from "./StoryLineGrid";
+import LifeMapPresetButton from "./LifeMapPresetButton";
+import lifeMaps from "../../data/lifeMaps";
+import LifeMapGrid from "./LifeMapGrid";
 import Button from "@material-ui/core/Button";
 import CrudDialog from "../../components/dialogs/CrudDialog";
 import useSubmitButtonRef from "../../hooks/useSubmitButtonRef";
@@ -27,13 +27,13 @@ const defaultColors = [
     '#009688',
 ]
 
-export interface StoryLine {
+export interface LifeMap {
     id: string;
     name: string;
-    entries: StoryLineEntry[];
+    entries: LifeMapEntry[];
 }
 
-export interface StoryLineEntry {
+export interface LifeMapEntry {
     id: string;
     name: string;
     color: string;
@@ -48,20 +48,20 @@ export interface StoryLineEntry {
 
 const michael = new Date(1996, 2, 7)
 
-export const StoryLinePage = () => {
+export const LifeMapPage = () => {
 
 
     const [birthDate, setBirthDate] = useState(new Date(1996, 3, 7))
     const [skip, setSkip] = useState(0)
     const [take, setTake] = useState(0)
-    const [storyLine, setStoryLine] = useState<StoryLine>(storyLines[0])
+    const [storyLine, setStoryLine] = useState<LifeMap>(lifeMaps[0])
 
     const [selectedWeek, setSelectedWeek] = useState<number | undefined>();
     const nextColor = defaultColors[storyLine.entries.length % defaultColors.length];
 
 
     const [submitButtonRef] = useSubmitButtonRef();
-    const [editElement, setEditElement] = useState<StoryLineEntry | undefined>(undefined)
+    const [editElement, setEditElement] = useState<LifeMapEntry | undefined>(undefined)
     const onBlockClick = (index: number) => {
         if (!selectedWeek) {
             setSelectedWeek(index);
@@ -78,7 +78,7 @@ export const StoryLinePage = () => {
         })
 
     }
-    const onSubmit = (values: StoryLineEntry) => {
+    const onSubmit = (values: LifeMapEntry) => {
         if (values === undefined) return;
         const newElements = [...storyLine.entries];
         const elementIndex = newElements.findIndex((e) => e.id === values.id);
@@ -87,7 +87,7 @@ export const StoryLinePage = () => {
         setEditElement(undefined)
     }
 
-    const onDelete = (entry: StoryLineEntry) => {
+    const onDelete = (entry: LifeMapEntry) => {
         setStoryLine({...storyLine, entries: storyLine.entries.filter(e => e.id !== entry.id)})
         setEditElement(undefined)
     }
@@ -98,14 +98,14 @@ export const StoryLinePage = () => {
             width: '100%',
         }}>
 
-            <CrudDialog<StoryLineEntry>
+            <CrudDialog<LifeMapEntry>
                 title={'Edit event'}
                 element={editElement}
                 onCancel={() => setEditElement(undefined)}
                 onDelete={onDelete}
                 submitButtonRef={submitButtonRef}
             >
-                <Formik<StoryLineEntry> onSubmit={onSubmit} initialValues={editElement ?? {
+                <Formik<LifeMapEntry> onSubmit={onSubmit} initialValues={editElement ?? {
                     id: randomId(),
                     name: '',
                     color: '#000000',
@@ -194,7 +194,7 @@ export const StoryLinePage = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <StoryLinePresetButton
+                                    <LifeMapPresetButton
                                         onSelect={(e) => setStoryLine(e)}
                                     />
                                 </Grid>
@@ -217,7 +217,7 @@ export const StoryLinePage = () => {
 
                         <List>
                             {storyLine.entries.map((e) => {
-                                return <StoryLineEntryCard
+                                return <LifeMapEntryCard
                                     entry={e}
                                     onClick={() => setEditElement(e)}
                                 />
@@ -227,7 +227,7 @@ export const StoryLinePage = () => {
                     </Grid>
 
                     <Grid item xl={9} lg={12}>
-                        <StoryLineGrid
+                        <LifeMapGrid
                             birthDate={birthDate}
                             skip={skip}
                             take={take}
@@ -246,4 +246,4 @@ export const StoryLinePage = () => {
 }
 
 
-export default StoryLinePage;
+export default LifeMapPage;

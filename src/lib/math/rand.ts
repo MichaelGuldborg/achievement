@@ -1,6 +1,6 @@
 let _seed = 1;
 export const srand = (seed: number) => _seed = seed
-const USE_RANDOM_SEED = true;
+const USE_RANDOM_SEED = false;
 
 export function rand() {
     if (USE_RANDOM_SEED) {
@@ -19,7 +19,7 @@ export const randomFloat = (min?: number, max?: number) => {
 }
 
 export const randomInt = (max: number = 100) => {
-    return Math.floor(rand() * Math.floor(max));
+    return Math.round(rand() * Math.floor(max));
 };
 
 export const randomDate = (years: number = 35, months: number = 12, dates: number = 26) => {

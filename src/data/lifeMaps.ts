@@ -1,8 +1,8 @@
 import {randomId} from "../lib/math/randomId";
-import {StoryLine} from "../pages/storyline/StoryLinePage";
+import {LifeMap} from "../pages/lifemap/LifeMapPage";
 
 
-export const storyLines: StoryLine[] = [{
+export const lifeMaps: LifeMap[] = [{
     id: 'standard',
     name: 'Standard',
     entries: [{
@@ -113,4 +113,4 @@ export const storyLines: StoryLine[] = [{
     }]
 }]
 
-export default storyLines;
+export default lifeMaps;

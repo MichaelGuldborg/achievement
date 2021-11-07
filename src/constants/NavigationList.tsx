@@ -7,7 +7,8 @@ import HomeLineIcon from "remixicon-react/HomeLineIcon";
 import HomeLandingPage from "../pages/home_landing/HomeLandingPage";
 import ActivityPage from "../pages/activity/ActivityPage";
 import Challenge30DayPage from "../pages/activity/Challenge30DayPage";
-import StoryLinePage from "../pages/storyline/StoryLinePage";
+import LifeMapPage from "../pages/lifemap/LifeMapPage";
+import HabitsPage from "../pages/habits/HabitsPage";
 
 export interface ActionNavItem {
     name: string;
@@ -38,6 +39,12 @@ export const useNavigationList = () => {
 
 export const navigationList: NavItem[] = [
     {
+        name: "Habits",
+        icon: HomeLineIcon,
+        path: Routes.habits,
+        component: HabitsPage,
+    },
+    {
         name: "Activity",
         icon: HomeLineIcon,
         path: Routes.activity,
@@ -52,8 +59,8 @@ export const navigationList: NavItem[] = [
     {
         name: "Storyline",
         icon: HomeLineIcon,
-        path: Routes.storyline,
-        component: StoryLinePage,
+        path: Routes.lifeMap,
+        component: LifeMapPage,
     },
     {
         name: "Home",

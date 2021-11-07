@@ -14,6 +14,7 @@ const CommunityPage = () => {
                 <Route path='/nicolai/me' component={MePage}/>
                 <Route exact path='/nicolai' component={ExplorePage}/>
             </Switch>
+
             <div style={{
                 background: '#F7F7F7',
                 paddingTop: 32,

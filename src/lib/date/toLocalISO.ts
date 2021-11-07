@@ -74,7 +74,7 @@ export const toLocalEventTime = (a?: Date | string | null, b?: Date | string | n
 };
 
 export const dayNames = [
-    'Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'
+    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
 ];
 
 export const monthNames = [

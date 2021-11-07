@@ -5,11 +5,12 @@ import Routes from "../../constants/Routes";
 import history from "../../history";
 import {useAllActivities} from "../../hooks/useActivity";
 import Activity from "../../models/Activity";
-import StoryLineGrid from "../storyline/StoryLineGrid";
-import storyLines from "../../data/storyLines";
+import LifeMap from "../lifemap/LifeMapGrid";
+import lifeMaps from "../../data/lifeMaps";
 import ExternalLinkLineIcon from "remixicon-react/ExternalLinkLineIcon";
 import IconButton from "@material-ui/core/IconButton";
 import ActivityCard from "./ActivityCard";
+import LifeBalanceGrid from "../LifeBalanceGrid";
 
 
 // TODO
@@ -19,7 +20,7 @@ import ActivityCard from "./ActivityCard";
 // TODO
 // Story line
 // [x] Show main story line in a 90 year week view
-// [x] Crud form to make custom storyline
+// [x] Crud form to make custom lifemap
 // [x] Select weeks instead of input number
 // [x] Fix edit function using randomId()
 // [ ] Sort entries by start time in list
@@ -30,6 +31,7 @@ import ActivityCard from "./ActivityCard";
 // Add category filter
 // Add search functionality
 // Add create/edit form
+
 
 export const HomeLandingPage = () => {
 
@@ -48,14 +50,14 @@ export const HomeLandingPage = () => {
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between'
                 }}
             >
                 <h1>Life balance</h1>
+                <IconButton onClick={() => history.push(Routes.habits)}>
+                    <ExternalLinkLineIcon/>
+                </IconButton>
             </div>
-            <div>
-                TODO
-            </div>
+            <LifeBalanceGrid/>
 
             <div
                 style={{
@@ -63,18 +65,18 @@ export const HomeLandingPage = () => {
                     alignItems: 'center',
                 }}
             >
-                <h1>Story Line</h1>
-                <IconButton onClick={() => history.push(Routes.storyline)}>
+                <h1>Life map</h1>
+                <IconButton onClick={() => history.push(Routes.lifeMap)}>
                     <ExternalLinkLineIcon/>
                 </IconButton>
             </div>
             <div>
                 <div style={{marginLeft: -32, marginRight: -32, paddingTop: 8, paddingBottom: 16}}>
-                    <StoryLineGrid
+                    <LifeMap
                         birthDate={new Date(1996, 3, 7)}
                         skip={25}
                         take={5}
-                        entries={storyLines[0].entries}
+                        entries={lifeMaps[0].entries}
                     />
                 </div>
             </div>
@@ -89,7 +91,6 @@ export const HomeLandingPage = () => {
                 <h1>Activities</h1>
             </div>
             <Grid container spacing={3}>
-
                 {elements.slice(0, 8).map((element, index) => (
                     <Grid key={element.id} item md={3}>
                         <ActivityCard

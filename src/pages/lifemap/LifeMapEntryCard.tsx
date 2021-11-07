@@ -2,14 +2,14 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
-import {StoryLineEntry} from "./StoryLinePage";
+import {LifeMapEntry} from "./LifeMapPage";
 import EditLineIcon from "remixicon-react/EditLineIcon";
 
 
-export const StoryLineEntryCard: React.FC<{
-    entry: StoryLineEntry;
+export const LifeMapEntryCard: React.FC<{
+    entry: LifeMapEntry;
     onClick?: VoidFunction;
-}> = ({entry,onClick}) => {
+}> = ({entry, onClick}) => {
 
     return (
         <ListItem>
@@ -29,4 +29,4 @@ export const StoryLineEntryCard: React.FC<{
     )
 }
 
-export default StoryLineEntryCard;
+export default LifeMapEntryCard;

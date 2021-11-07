@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {StoryLineEntry} from "./StoryLinePage";
+import {LifeMapEntry} from "./LifeMapPage";
 import {Popover} from "@material-ui/core";
 import theme from "../../constants/theme";
 import ArrowRightLineIcon from "remixicon-react/ArrowRightLineIcon";
@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-export const StoryLineGrid: React.FC<{
-    entries: StoryLineEntry[];
+export const LifeMapGrid: React.FC<{
+    entries: LifeMapEntry[];
     onClick?: (index: number) => void
     skip?: number;
     take?: number;
@@ -208,4 +208,4 @@ export const StoryLineGrid: React.FC<{
 
     )
 }
-export default StoryLineGrid;
+export default LifeMapGrid;

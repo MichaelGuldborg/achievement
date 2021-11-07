@@ -2,11 +2,11 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import {StoryLine} from "./StoryLinePage";
-import storyLines from "../../data/storyLines";
+import {LifeMap} from "./LifeMapPage";
+import lifeMaps from "../../data/lifeMaps";
 
-export const StoryLinePresetButton: React.FC<{
-    onSelect: (preset: StoryLine) => void;
+export const LifeMapPresetButton: React.FC<{
+    onSelect: (preset: LifeMap) => void;
 }> = ({onSelect}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -34,7 +34,7 @@ export const StoryLinePresetButton: React.FC<{
                 open={open}
                 onClose={handleClose}
             >
-                {storyLines.map((e) => {
+                {lifeMaps.map((e) => {
                     return (
                         <MenuItem
                             style={{minWidth: 160}}
@@ -51,4 +51,4 @@ export const StoryLinePresetButton: React.FC<{
     );
 }
 
-export default StoryLinePresetButton;
+export default LifeMapPresetButton;
