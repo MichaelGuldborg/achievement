@@ -1,6 +1,8 @@
 import {initializeApp} from "firebase/app";
 import {getAnalytics} from "firebase/analytics";
 import {getFirestore} from "firebase/firestore";
+import {getAuth} from "firebase/auth";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyD8usAtVboYqopXhwl5LtzE4hUbmCr22mc",
@@ -12,14 +14,17 @@ const firebaseConfig = {
     measurementId: "G-47KL2R6L9J"
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const firebaseApp = initializeApp(firebaseConfig);
+const analytics = getAnalytics(firebaseApp);
 const db = getFirestore();
+const firebaseAuth = getAuth(firebaseApp)
 
 // https://aggelosarvanitakis.medium.com/a-real-time-hook-with-firebase-react-query-f7eb537d5145
 
+
 export {
-    app,
+    firebaseApp,
     analytics,
-    db
+    db,
+    firebaseAuth,
 }

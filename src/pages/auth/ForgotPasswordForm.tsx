@@ -27,9 +27,6 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = () => {
         // }
     };
 
-    const initialValues = {
-        email: '',
-    };
     return (
         <Box>
             <h2>Nulstil adgangskode</h2>
@@ -37,7 +34,9 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = () => {
                 <Typography>Indtast din email, så sender vi dig instruktioner om at nulstille din
                     adgangskode</Typography>
             </Box>
-            <Formik<ForgotPasswordFormValues> onSubmit={onSubmit} initialValues={initialValues}>
+            <Formik<ForgotPasswordFormValues> onSubmit={onSubmit} initialValues={{
+                email: '',
+            }}>
                 {({errors, values, touched}) => (
                     <Form>
                         <Field
@@ -56,12 +55,20 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = () => {
                             autoFocus
                         />
 
-                        <FormButton loading={false}>
-                            Nulstil adgangskode
-                        </FormButton>
-                        {/*<Box p={2}>*/}
-                        {/*    <RequestFeedbackDisplay feedback={auth.feedback}/>*/}
-                        {/*</Box>*/}
+                        <Button
+                            type="submit"
+                            aria-label="submit"
+                            variant="contained"
+                            color={"primary"}
+                            fullWidth
+                            style={{
+                                paddingTop: 8,
+                                paddingBottom: 8,
+                                borderRadius: 40,
+                            }}
+                        >
+                            Reset password
+                        </Button>
                     </Form>
                 )}
             </Formik>

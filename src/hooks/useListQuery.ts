@@ -1,32 +1,49 @@
 import Identifiable from "../models/Identifyable";
 import {useQuery, useQueryClient} from "react-query";
+import {CrudService} from "../services/database";
 
 
-export const useListQuery = <T extends Identifiable, >(queryKey: string, queryFn: () => Promise<T[]>, initial: T[]) => {
+export const useListQuery = <T extends Identifiable, >(service: CrudService<T>) => {
     const queryClient = useQueryClient();
+    const queryKey = service.path;
 
     const query = useQuery<T[]>({
         queryKey: queryKey,
-        queryFn: queryFn,
-        initialData: initial ?? [],
+        queryFn: async () => {
+            const response = await service.readAll();
+            if (!response.success) return [];
+            return response.value;
+        },
         staleTime: Infinity,
         cacheTime: Infinity,
     });
 
+    const onCreate = async (value: T) => {
+        await queryClient.cancelQueries(queryKey)
+        const response = await service.create(value);
+        if (!response.success) return;
+
+        // naively update query state
+        const previous = queryClient.getQueryData(queryKey)
+        const next = queryClient.setQueryData(queryKey, (old: unknown) => {
+            if (!Array.isArray(old)) return [value];
+            return [...old, value];
+        })
+        return {previous, next}
+    }
+
     return {
         query: query,
         elements: query.data ?? [],
-        onCreate: async (value: T) => {
-            await queryClient.cancelQueries(queryKey)
-            const previous = queryClient.getQueryData(queryKey)
-            queryClient.setQueryData(queryKey, (old: unknown) => {
-                if (!Array.isArray(old)) return [value];
-                return [...old, value];
-            })
-            return {previous}
-        },
+        onCreate: onCreate,
         onUpdate: async (value: T) => {
+            if (!value.id) return onCreate(value);
+
             await queryClient.cancelQueries(queryKey)
+            const response = await service.update(value);
+            if (!response.success) return;
+
+            // naively update query state
             const previous = queryClient.getQueryData(queryKey)
             queryClient.setQueryData(queryKey, (old: unknown) => {
                 if (!Array.isArray(old)) return [value];
@@ -38,6 +55,12 @@ export const useListQuery = <T extends Identifiable, >(queryKey: string, queryFn
             return {previous}
         },
         onDelete: async (value: T | string) => {
+            await queryClient.cancelQueries(queryKey)
+
+            const response = await service.delete(value);
+            if (!response.success) return;
+
+            // naively update query state
             queryClient.setQueryData(queryKey, (old: unknown) => {
                 if (!Array.isArray(old)) return [];
                 const id = typeof value === 'string' ? value : value.id;

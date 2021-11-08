@@ -12,10 +12,9 @@ import VisibilityIcon from 'remixicon-react/Eye2LineIcon';
 import VisibilityOffIcon from 'remixicon-react/EyeCloseLineIcon';
 import Button from '@material-ui/core/Button';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import FormButton from "../../components/buttons/FormButton";
 import Routes from "../../constants/Routes";
 import history from "../../history";
-import theme from "../../constants/theme";
+import auth from "../../services/auth";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +40,8 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
     const [remember, setRemember] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const onSubmit = (values: LoginFormValues) => {
+    const onSubmit = async (values: LoginFormValues) => {
+        const response = await auth.signInWithEmail(values.email, values.password);
         history.push(Routes.home)
     };
 
@@ -55,29 +55,7 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
         <Formik<LoginFormValues> onSubmit={onSubmit} initialValues={initialValues}>
             {({errors, values, touched}) => (
                 <Form>
-
-                    <div style={{
-                        background: theme.palette.primary.main,
-                        textAlign: 'center',
-                        fontWeight: 600,
-                        fontSize: 18,
-                        color: 'white',
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        padding: 8,
-                        cursor: 'pointer'
-                    }}
-                         onClick={() => {
-                             history.push(Routes.home)
-                         }}
-
-                    >
-                        Pssst.. du kan springe login over ved at klikke her
-                    </div>
-
-                    <h2>Log ind</h2>
+                    <h2>Login</h2>
                     <Field
                         as={TextField}
                         error={errors.email && touched.email && values.email.length !== 0}
@@ -94,7 +72,6 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
                         autoFocus
                     />
                     <Box position="relative">
-
                         <Field
                             as={TextField}
                             error={errors.password && touched.password && values.password.length !== 0}
@@ -105,11 +82,11 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
                             required
                             id="password"
                             name="password"
-                            label="Adgangskode"
+                            label="Password"
                             type={showPassword ? 'text' : 'password'}
                             autoComplete="current-password"
                         />
-                        <Tooltip title={showPassword ? 'Skjul adgangskode' : 'Vis adganskode'}>
+                        <Tooltip title={showPassword ? 'Hide password' : 'Show password'}>
                             <IconButton
                                 size="medium"
                                 className={classes.showPasswordIcon}
@@ -120,9 +97,15 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
                         </Tooltip>
                     </Box>
 
-                    <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: 12,
+                        marginBottom: 12,
+                    }}>
                         <FormControlLabel
-                            label="Husk mig"
+                            label="Remember me"
                             control={<Checkbox
                                 checked={remember}
                                 onChange={() => setRemember(!remember)}
@@ -132,13 +115,38 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
                         <Button color="primary" onClick={() => {
                             history.push(Routes.forgotPassword)
                         }}>
-                            Glemt din adgangskode?
+                            Forgot your password?
                         </Button>
-                    </Box>
+                    </div>
 
-                    <FormButton loading={false}>
-                        Log ind
-                    </FormButton>
+
+                    <Button
+                        type="submit"
+                        aria-label="submit"
+                        variant="contained"
+                        color={"primary"}
+                        fullWidth
+                        style={{
+                            paddingTop: 8,
+                            paddingBottom: 8,
+                            borderRadius: 40,
+                        }}
+                    >
+                        Login
+                    </Button>
+
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 16,
+                    }}>
+                        <Button color="primary" onClick={() => {
+                            history.push(Routes.register)
+                        }}>
+                            Register a user?
+                        </Button>
+                    </div>
                 </Form>
             )}
         </Formik>

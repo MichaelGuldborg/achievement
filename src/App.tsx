@@ -15,6 +15,9 @@ import DateFnsUtils from "@date-io/date-fns";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {DndProvider} from "react-dnd";
 import CommunityPage from "./pages/community/CommunityPage";
+import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import RegisterUserPage from "./pages/auth/RegisterUserPage";
+import LoginPage from "./pages/auth/LoginPage";
 
 const queryClient = new QueryClient();
 
@@ -29,9 +32,9 @@ function App() {
                             <Router history={history}>
                                 <Switch>
                                     {/*AUTH*/}
-                                    {/*<Route exact path={Routes.landing} component={HomePage}/>*/}
-                                    {/*<Route path={Routes.resetPassword} component={ResetPasswordPage}/>*/}
-                                    {/*<Route path={Routes.register} component={RegisterUserPage}/>*/}
+                                    <Route exact path={Routes.landing} component={LoginPage}/>
+                                    <Route path={Routes.resetPassword} component={ResetPasswordPage}/>
+                                    <Route path={Routes.register} component={RegisterUserPage}/>
 
                                     <Route path="/nicolai" component={CommunityPage}/>
 

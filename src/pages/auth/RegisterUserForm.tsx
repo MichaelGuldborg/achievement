@@ -2,10 +2,12 @@ import {Field, Form, Formik} from "formik";
 import TextField from "@material-ui/core/TextField/TextField";
 import React from "react";
 import {Grid} from "@material-ui/core";
-import FormProps from "../../models/FormProps";
 import Validators from "../../lib/Validators";
-import FormButton from "../../components/buttons/FormButton";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button/Button";
+import auth from "../../services/auth";
+import history from "../../history";
+import Routes from "../../constants/Routes";
 
 export interface RegisterUserRequest {
     firstName: string;
@@ -17,26 +19,28 @@ export interface RegisterUserRequest {
     privacyPolicy: boolean;
 }
 
-export type RegisterUserAuthFormProps = FormProps<RegisterUserRequest>;
 
-export const RegisterUserForm: React.FC<RegisterUserAuthFormProps> = ({ initial, onSubmit}) => {
+export const RegisterUserForm: React.FC = () => {
 
-    const initialValues: RegisterUserRequest = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        passwordRepeat: '',
-        phoneNumber: '',
-        privacyPolicy: false,
-        ...initial,
+    const onSubmit = async (values: RegisterUserRequest) => {
+        const response = await auth.registerWithEmail(values);
+        history.push(Routes.home);
     }
+
 
     return (
         <div>
             <Formik<RegisterUserRequest>
                 onSubmit={onSubmit}
-                initialValues={initialValues}
+                initialValues={{
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    password: '',
+                    passwordRepeat: '',
+                    phoneNumber: '',
+                    privacyPolicy: false,
+                }}
             >
                 {({values, errors, touched}) => {
                     return (
@@ -52,7 +56,7 @@ export const RegisterUserForm: React.FC<RegisterUserAuthFormProps> = ({ initial,
                                         fullWidth
                                         variant='filled'
                                         id="firstName"
-                                        label="Fornavn"
+                                        label="First name"
                                         name="firstName"
                                         type="text"
                                         autoFocus
@@ -68,27 +72,27 @@ export const RegisterUserForm: React.FC<RegisterUserAuthFormProps> = ({ initial,
                                         fullWidth
                                         variant='filled'
                                         id="lastName"
-                                        label="Efternavn"
+                                        label="Last name"
                                         name="lastName"
                                         type="text"
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                    <Field
-                                        as={TextField}
-                                        validate={() => Validators.phoneNumber(values.phoneNumber)}
-                                        error={errors.phoneNumber && touched.phoneNumber}
-                                        helperText={errors.phoneNumber}
-                                        fullWidth
-                                        variant='filled'
-                                        id="phoneNumber"
-                                        name="phoneNumber"
-                                        label="Telefonnummer"
-                                        type="phone"
-                                        autoComplete='phone'
-                                    />
-                                </Grid>
+                                {/*<Grid item xs={12}>*/}
+                                {/*    <Field*/}
+                                {/*        as={TextField}*/}
+                                {/*        validate={() => Validators.phoneNumber(values.phoneNumber)}*/}
+                                {/*        error={errors.phoneNumber && touched.phoneNumber}*/}
+                                {/*        helperText={errors.phoneNumber}*/}
+                                {/*        fullWidth*/}
+                                {/*        variant='filled'*/}
+                                {/*        id="phoneNumber"*/}
+                                {/*        name="phoneNumber"*/}
+                                {/*        label="Phone number"*/}
+                                {/*        type="phone"*/}
+                                {/*        autoComplete='phone'*/}
+                                {/*    />*/}
+                                {/*</Grid>*/}
 
                                 <Grid item xs={12}>
                                     <Field
@@ -98,7 +102,6 @@ export const RegisterUserForm: React.FC<RegisterUserAuthFormProps> = ({ initial,
                                         helperText={values.email.length !== 0 && errors.email}
                                         required
                                         fullWidth
-                                        disabled
                                         variant='filled'
                                         id="email"
                                         label="Email"
@@ -118,7 +121,7 @@ export const RegisterUserForm: React.FC<RegisterUserAuthFormProps> = ({ initial,
                                         fullWidth
                                         variant='filled'
                                         id="password"
-                                        label="Adgangskode"
+                                        label="Password"
                                         name="password"
                                         type="password"
                                         autoComplete='password'
@@ -135,7 +138,7 @@ export const RegisterUserForm: React.FC<RegisterUserAuthFormProps> = ({ initial,
                                         fullWidth
                                         variant='filled'
                                         id="passwordRepeat"
-                                        label="Gentag adgangskode"
+                                        label="Repeat password"
                                         name="passwordRepeat"
                                         type="password"
                                         autoComplete='password'
@@ -150,17 +153,29 @@ export const RegisterUserForm: React.FC<RegisterUserAuthFormProps> = ({ initial,
                                         id="policy"
                                     />
                                     <span>
-                                    {'* Jeg godkender DiKom\'s '}
-                                        <a href="https://diti.dk/privacy" target="_blank" rel="noopener noreferrer">
-                                        privatlivspolitik
+                                    {'* I accept the '}
+                                        <a href="https://michaelguldborg.dk/privacy" target="_blank"
+                                           rel="noopener noreferrer">
+                                        privacypolicy
                                     </a>
                                 </span>
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <FormButton>
-                                        Bekræft
-                                    </FormButton>
+                                    <Button
+                                        type="submit"
+                                        aria-label="submit"
+                                        variant="contained"
+                                        color={"primary"}
+                                        fullWidth
+                                        style={{
+                                            paddingTop: 8,
+                                            paddingBottom: 8,
+                                            borderRadius: 40,
+                                        }}
+                                    >
+                                        Register
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Form>

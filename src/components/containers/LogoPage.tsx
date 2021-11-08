@@ -10,8 +10,9 @@ const useStyles = makeStyles((theme) => ({
         height: '100vh',
     },
     image: {
+        background: 'linear-gradient(to top left, #3a1c71, #d76d77, #ffaf7b)',
+        // background: 'linear-gradient(to right, #4b6cb7, #182848)',
         backgroundRepeat: 'no-repeat',
-        background: "linear-gradient(45deg, rgba(148,45,196,1) 0%, rgba(8,126,225,1) 100%)",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
     },
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         width: '20%',
         height: '20%',
         backgroundRepeat: 'no-repeat',
-        backgroundImage: `url("${LogoIcon}")`,
+        // backgroundImage: `url("${LogoIcon}")`,
         backgroundSize: 'contain',
     }
 }));
@@ -46,11 +47,6 @@ const LogoPage: React.FC = ({children}) => {
 
     return (
         <Grid container className={classes.root}>
-            <Grid item xs={false} sm={4} md={7} lg={8} className={classes.image}>
-                <div className={classes.imgWrapper}>
-                    <div className={classes.img}/>
-                </div>
-            </Grid>
             <Grid item xs={12} sm={8} md={5} lg={4}>
                 <Paper elevation={12} square className={classes.content}>
                     <Box
@@ -67,6 +63,11 @@ const LogoPage: React.FC = ({children}) => {
                         <VersionTag/>
                     </Box>
                 </Paper>
+            </Grid>
+            <Grid item xs={false} sm={4} md={7} lg={8} className={classes.image}>
+                <div className={classes.imgWrapper}>
+                    <div className={classes.img}/>
+                </div>
             </Grid>
         </Grid>
     );

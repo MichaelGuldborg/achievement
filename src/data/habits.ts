@@ -1,5 +1,5 @@
 import {randomId} from "../lib/math/randomId";
-import {Habit} from "../pages/habits/HabitsPage";
+import Habit from "../models/Habit";
 
 
 export const habits: Habit[] = [{
@@ -129,6 +129,13 @@ export const habits: Habit[] = [{
     type: 'family',
     isYearly: true,
     dayOfWeek: 'monday',
-    timeOfDay: '10:00',
+    timeOfDay: '',
+}, {
+    id: randomId(),
+    name: 'Vacation with Harald/Lasse',
+    type: 'friendship',
+    isYearly: true,
+    dayOfWeek: 'monday',
+    timeOfDay: '',
 }];
 export default habits;

@@ -6,8 +6,9 @@ import SelectNamed from "../../components/inputs/SelectNamed";
 import balances from "../../data/balances";
 import {dayNames} from "../../lib/date/toLocalISO";
 import React from "react";
-import {Habit} from "./HabitsPage";
 import FormProps from "../../models/FormProps";
+import Habit from "../../models/Habit";
+
 
 
 export const HabitForm: React.FC<FormProps<Habit>> = ({onSubmit, initial, submitButtonRef}) => {
@@ -68,7 +69,7 @@ export const HabitForm: React.FC<FormProps<Habit>> = ({onSubmit, initial, submit
                                     name={'timeOfDay'}
                                     type={'time'}
                                     label={'Time of day'}
-                                    InputLabelProps={{ shrink: true }}
+                                    InputLabelProps={{shrink: true}}
                                     variant="outlined"
                                     fullWidth
                                 />

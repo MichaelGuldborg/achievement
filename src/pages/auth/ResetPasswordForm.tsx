@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField/TextField";
 import FormButton from "../../components/buttons/FormButton";
 import {Alert} from "@material-ui/lab";
 import Validators from "../../lib/Validators";
+import Button from "@material-ui/core/Button";
 
 export interface ResetPasswordFormProps {
 }
@@ -69,9 +70,20 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = () => {
                             type={'password'}
                             autoComplete="current-password-repeat"
                         />
-                        <FormButton>
-                            Opdater adgangskode
-                        </FormButton>
+                        <Button
+                            type="submit"
+                            aria-label="submit"
+                            variant="contained"
+                            color={"primary"}
+                            fullWidth
+                            style={{
+                                paddingTop: 8,
+                                paddingBottom: 8,
+                                borderRadius: 40,
+                            }}
+                        >
+                            Reset password
+                        </Button>
                     </Form>
                 )}
             </Formik>
