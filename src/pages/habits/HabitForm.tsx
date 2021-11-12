@@ -10,7 +10,6 @@ import FormProps from "../../models/FormProps";
 import Habit from "../../models/Habit";
 
 
-
 export const HabitForm: React.FC<FormProps<Habit>> = ({onSubmit, initial, submitButtonRef}) => {
     return (
         <Formik<Habit> onSubmit={onSubmit} initialValues={{
@@ -19,8 +18,9 @@ export const HabitForm: React.FC<FormProps<Habit>> = ({onSubmit, initial, submit
             isDaily: false,
             isMonthly: false,
             isYearly: false,
-            dayOfWeek: 'monday',
-            timeOfDay: '10:00',
+            dayOfWeek: undefined,
+            startTime: '10:00',
+            endTime: '12:00',
             ...initial,
         }}>
             {({values, setFieldValue}) => {
@@ -35,7 +35,7 @@ export const HabitForm: React.FC<FormProps<Habit>> = ({onSubmit, initial, submit
                     <Form>
                         <button aria-label="submit" type="submit" style={{display: 'none'}} ref={submitButtonRef}/>
                         <Grid container spacing={2}>
-                            <Grid item xs={6}>
+                            <Grid item xs={12}>
                                 <Field
                                     as={TextField}
                                     name="name"
@@ -58,7 +58,10 @@ export const HabitForm: React.FC<FormProps<Habit>> = ({onSubmit, initial, submit
                                 <Field
                                     as={SelectNamed}
                                     name={'dayOfWeek'}
-                                    options={dayNames.map((e, i) => ({id: e.toLowerCase(), name: e}))}
+                                    options={[{
+                                        id: 'undefined',
+                                        name: 'None'
+                                    }, ...dayNames.map((e) => ({id: e.toLowerCase(), name: e}))]}
                                     variant="outlined"
                                     fullWidth
                                 />
@@ -66,9 +69,20 @@ export const HabitForm: React.FC<FormProps<Habit>> = ({onSubmit, initial, submit
                             <Grid item xs={6}>
                                 <Field
                                     as={TextField}
-                                    name={'timeOfDay'}
+                                    name={'startTime'}
                                     type={'time'}
-                                    label={'Time of day'}
+                                    label={'Start time'}
+                                    InputLabelProps={{shrink: true}}
+                                    variant="outlined"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Field
+                                    as={TextField}
+                                    name={'endTime'}
+                                    type={'time'}
+                                    label={'End time'}
                                     InputLabelProps={{shrink: true}}
                                     variant="outlined"
                                     fullWidth

@@ -9,13 +9,13 @@ export interface Habit {
     isMonthly?: boolean,
     isYearly?: boolean,
     dayOfWeek?: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday',
-    timeOfDay: string,
+    startTime?: string;
+    endTime?: string;
 }
 
 export const defaultHabit: Habit = {
     id: "",
     name: "",
-    timeOfDay: ""
 }
 
 export default Habit;

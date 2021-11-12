@@ -9,6 +9,7 @@ import ActivityPage from "../pages/activity/ActivityPage";
 import Challenge30DayPage from "../pages/activity/Challenge30DayPage";
 import LifeMapPage from "../pages/lifemap/LifeMapPage";
 import HabitsPage from "../pages/habits/HabitsPage";
+import AgendaPage from '../pages/AgendaPage';
 
 export interface ActionNavItem {
     name: string;
@@ -39,7 +40,19 @@ export const useNavigationList = () => {
 
 export const navigationList: NavItem[] = [
     {
-        name: "Habits",
+        name: "Home",
+        icon: HomeLineIcon,
+        path: Routes.home,
+        component: HomeLandingPage,
+    },
+    {
+        name: "Agenda",
+        icon: HomeLineIcon,
+        path: Routes.agenda,
+        component: AgendaPage,
+    },
+    {
+        name: "Routine",
         icon: HomeLineIcon,
         path: Routes.habits,
         component: HabitsPage,
@@ -61,12 +74,6 @@ export const navigationList: NavItem[] = [
         icon: HomeLineIcon,
         path: Routes.lifeMap,
         component: LifeMapPage,
-    },
-    {
-        name: "Home",
-        icon: HomeLineIcon,
-        path: Routes.home,
-        component: HomeLandingPage,
     },
 ];
 

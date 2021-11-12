@@ -8,11 +8,14 @@ import CrudDialog from "../../components/dialogs/CrudDialog";
 import HabitForm from "./HabitForm";
 import useSubmitButtonRef from "../../hooks/useSubmitButtonRef";
 import {useListQuery} from "../../hooks/useListQuery";
-import ColoredCard from "./ColoredCard";
 import {crudService} from "../../services/database";
 import AddLineIcon from "remixicon-react/AddLineIcon";
 import Habit, {defaultHabit} from "../../models/Habit";
 import {useCurrentUser} from "../../hooks/useCurrentUser";
+import BasePage from "../../components/containers/BasePage";
+import IconButton from "@material-ui/core/IconButton";
+import VisibilityIcon from 'remixicon-react/Eye2LineIcon';
+import VisibilityOffIcon from 'remixicon-react/EyeCloseLineIcon';
 
 
 export const currentUserCollection = (col?: string) => {
@@ -31,21 +34,80 @@ export const HabitsPage: React.FC = () => {
     const [submitButtonRef] = useSubmitButtonRef();
     const [editElement, setEditElement] = useState<Habit | undefined>(undefined)
     const {elements, onUpdate, onDelete} = useListQuery<Habit>(crudService(collection))
+    elements.sort((a, b) => {
+        if (!a.startTime || !b.startTime) return 0;
+        return a.startTime.localeCompare(b.startTime);
+    })
+    const minStartTime = elements[0]?.startTime ?? '08:00';
+    const [showDuration, setShowDuration] = useState(false);
+
+    const getDuration = (startTime?: string, endTime?: string) => {
+        if (!startTime || !endTime) return 0;
+        const startHour = parseInt(startTime.split(':')[0])
+        const startMinute = parseInt(startTime.split(':')[1])
+        const endHour = parseInt(endTime.split(':')[0])
+        const endMinute = parseInt(endTime.split(':')[1])
+        const hourDiff = endHour - startHour;
+        const minuteDiff = endMinute - startMinute;
+        return hourDiff * 60 + minuteDiff;
+    }
 
 
     const renderHabit = (habit: Habit) => {
         const balance = balances.find(e => e.id === habit.type);
-        return <ColoredCard
-            title={habit.name}
-            subtitle={habit.timeOfDay}
-            color={balance?.color}
-            icon={balance?.icon}
-            onClick={() => setEditElement(habit)}
-        />
+        const duration = getDuration(habit.startTime, habit.endTime);
+        const height = showDuration && !habit.isDaily && !habit.isMonthly && !habit.isYearly ? duration : undefined
+
+        return (
+            <div
+                style={{marginRight: 32, cursor: 'pointer'}}
+                onClick={() => setEditElement(habit)}
+            >
+                <div style={{
+                    width: '100%',
+                    height: height,
+                    display: 'flex',
+                    position: 'relative',
+                    flexDirection: 'column',
+                    margin: '0px 6px 12px 6px',
+                    padding: 10,
+                    paddingRight: 4,
+                    backgroundColor: balance?.color ?? '#A79B8E',
+                    // color: theme.palette.getContrastText(color ?? '#000000'),
+                    color: '#ffffff',
+                    boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.25)',
+                    borderRadius: 4,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                }}>
+                    {balance?.icon !== undefined && <balance.icon style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        margin: 10,
+                    }}/>}
+                    <span style={{
+                        fontSize: 16,
+                        fontWeight: 600,
+                        lineHeight: '22px',
+                        letterSpacing: '0.06em',
+                    }}>{habit.name}</span>
+                    <span style={{
+                        fontSize: 12,
+                        fontWeight: 'normal',
+                        lineHeight: '18px',
+                        letterSpacing: '0.06em',
+                    }}>{habit.startTime + ' - ' + habit.endTime}</span>
+                </div>
+            </div>
+        )
+
     }
 
+
     return (
-        <div style={{width: '100vw', padding: 16}}>
+        <BasePage>
 
             <div style={{position: 'fixed', bottom: 32, right: 32, zIndex: 1000}}>
                 <Fab color="primary" aria-label="add" onClick={() => {
@@ -71,6 +133,9 @@ export const HabitsPage: React.FC = () => {
             <Grid container spacing={2}>
                 <Grid item xl={12} lg={12} xs={12}>
                     <Paper style={{padding: 16}}>
+                        <IconButton onClick={() => setShowDuration(!showDuration)}>
+                            {showDuration ? <VisibilityIcon/> : <VisibilityOffIcon/>}
+                        </IconButton>
                         <div style={{display: 'flex'}}>
                             {Array(7).fill(0).map((e, index) => {
                                 return <div style={{flex: 1, fontWeight: 600}}>
@@ -85,10 +150,11 @@ export const HabitsPage: React.FC = () => {
                             {Array(7).fill(0).map((e, index) => {
                                 const habitsThisDay = elements.filter(h => {
                                     if (h.isMonthly || h.isYearly) return false;
-                                    // return h.isDaily || h.dayOfWeek === dayNames[index].toLowerCase();
                                     return h.dayOfWeek === dayNames[index].toLowerCase();
                                 })
-                                habitsThisDay.sort((a, b) => a.timeOfDay.localeCompare(b.timeOfDay))
+
+                                const minStartTimeDuration = getDuration(minStartTime, habitsThisDay[0]?.startTime)
+
                                 return (
                                     <div
                                         style={{
@@ -97,6 +163,7 @@ export const HabitsPage: React.FC = () => {
                                             borderRadius: 4
                                         }}>
                                         <div style={{height: 6}}/>
+                                        {showDuration && <div style={{height: minStartTimeDuration}}/>}
                                         {habitsThisDay.map(renderHabit)}
                                     </div>
                                 )
@@ -124,7 +191,7 @@ export const HabitsPage: React.FC = () => {
                     )
                 })}
             </Grid>
-        </div>
+        </BasePage>
 
     )
 }

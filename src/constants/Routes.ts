@@ -16,6 +16,7 @@ class Routes {
     static readonly home = '/home';
     static readonly lifeMap = '/home/life-map';
     static readonly habits = '/home/habits';
+    static readonly agenda = '/home/agenda';
     static readonly activity = '/home/activity/:activityId';
     static readonly challenge30Day = '/home/challenge/30-day';
 

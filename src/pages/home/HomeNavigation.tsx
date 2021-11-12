@@ -2,13 +2,15 @@ import React from "react";
 import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Divider, Hidden} from "@material-ui/core";
+import {Button, Divider, Hidden, IconButton} from "@material-ui/core";
 import {useNavigationList} from "../../constants/NavigationList";
 import SignOutIcon from 'remixicon-react/LogoutCircleLineIcon';
 import DrawerButton from "./DrawerButton";
 import {CustomTheme} from "../../constants/theme";
 import history from "../../history";
 import Routes from "../../constants/Routes";
+import Paper from "@material-ui/core/Paper";
+import MenuLineIcon from "remixicon-react/MenuLineIcon";
 
 const useStyles = makeStyles<CustomTheme>((theme) => ({
     drawer: {
@@ -35,9 +37,35 @@ interface DashboardDrawerProps {
     onMobileToggle: () => void;
 }
 
-export const HomeDrawer: React.FC<DashboardDrawerProps> = ({mobileOpen, onMobileToggle}) => {
+export const HomeNavigation: React.FC<DashboardDrawerProps> = ({mobileOpen, onMobileToggle}) => {
     const classes = useStyles();
     const navigationList = useNavigationList();
+
+
+    return (
+        <div style={{position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100}}>
+            <Paper style={{padding: '8px 16px'}}>
+                <Hidden mdDown>
+                    {navigationList.map((item) =>
+                        <Button
+                            onClick={() => history.push(item.path)}
+                            color={"primary"}
+                            variant={"text"}
+                        >
+                            {item.name}
+                        </Button>
+                    )}
+                </Hidden>
+                <Hidden mdUp>
+                    <div style={{height: 32, display: 'flex', justifyContent: 'flex-end'}}>
+                        <IconButton>
+                            <MenuLineIcon/>
+                        </IconButton>
+                    </div>
+                </Hidden>
+            </Paper>
+        </div>
+    )
 
 
     const content = (
@@ -47,6 +75,7 @@ export const HomeDrawer: React.FC<DashboardDrawerProps> = ({mobileOpen, onMobile
             </div>
             <Divider/>
             {navigationList.map((item) =>
+
                 <DrawerButton
                     key={item.path}
                     item={item}
@@ -96,7 +125,7 @@ export const HomeDrawer: React.FC<DashboardDrawerProps> = ({mobileOpen, onMobile
     )
 }
 
-export default HomeDrawer;
+export default HomeNavigation;
 
 
 

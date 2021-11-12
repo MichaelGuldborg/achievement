@@ -1,6 +1,9 @@
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import HomeSwitch from "./HomeSwitch";
+import theme from "../../constants/theme";
+import {useMediaQuery} from "@material-ui/core";
+import HomeNavigation from "./HomeNavigation";
 
 
 const useStyles = makeStyles(() => ({
@@ -40,17 +43,16 @@ export const HomePage = () => {
 
 
     // mobile drawer handling
-    // const theme = useTheme();
-    // const mobile = useMediaQuery(theme.breakpoints.down("sm"))
-    // const [mobileOpen, setMobileOpen] = React.useState(false);
-    // const handleDrawerToggle = () => {
-    //     if (mobile) setMobileOpen(!mobileOpen);
-    // }
+    const mobile = useMediaQuery(theme.breakpoints.down("sm"))
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const handleDrawerToggle = () => {
+        if (mobile) setMobileOpen(!mobileOpen);
+    }
 
 
     return (
         <div className={classes.root}>
-            {/*<HomeDrawer mobileOpen={mobileOpen} onMobileToggle={handleDrawerToggle}/>*/}
+            <HomeNavigation mobileOpen={mobileOpen} onMobileToggle={handleDrawerToggle}/>
             <div className={classes.content}>
                 <div className={classes.switch}>
                     <HomeSwitch/>

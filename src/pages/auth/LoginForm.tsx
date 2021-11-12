@@ -15,6 +15,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Routes from "../../constants/Routes";
 import history from "../../history";
 import auth from "../../services/auth";
+import useLocalAuthentication, {useLocalRoute} from "../../hooks/useLocalAuthentication";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,25 +36,38 @@ export interface LoginFormValues {
     password: string;
 }
 
+
 export const LoginForm: React.FC<LoginFormProps> = () => {
     const classes = useStyles();
     const [remember, setRemember] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
+    const [route] = useLocalRoute();
+    const {setCredentials} = useLocalAuthentication((e) => {
+        e.success && history.push(route || Routes.home);
+    })
+
+
     const onSubmit = async (values: LoginFormValues) => {
         const response = await auth.signInWithEmail(values.email, values.password);
-        history.push(Routes.home)
+
+        if (remember) {
+            setCredentials(values.email, values.password);
+        }
+
+        if (response.success) {
+            history.push(Routes.home)
+        }
+
     };
 
-
-    const initialValues = {
-        email: '',
-        password: '',
-    };
 
     return (
-        <Formik<LoginFormValues> onSubmit={onSubmit} initialValues={initialValues}>
-            {({errors, values, touched}) => (
+        <Formik<LoginFormValues> onSubmit={onSubmit} initialValues={{
+            email: '',
+            password: '',
+        }}>
+            {({errors, values, touched, }) => (
                 <Form>
                     <h2>Login</h2>
                     <Field

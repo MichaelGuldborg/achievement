@@ -3,7 +3,7 @@ import {RemixiconReactIconComponentType} from "remixicon-react";
 
 export const ColoredCard: React.FC<{
     title: string;
-    subtitle: string;
+    subtitle?: string;
     color?: string;
     icon?: RemixiconReactIconComponentType;
     onClick?: VoidFunction;
