@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import Paper from "@material-ui/core/Paper";
 import BasePageToolbar, {CreateButton} from "../../components/containers/BasePageToolbar";
 import {useListQuery} from "../../hooks/useListQuery";
-import localCrudService from "../../services/localCrudService";
 import {challenges} from "../../data/challenges";
 import {Challenge} from "../../models/Activity";
 import {CheckIcon} from "../AgendaPage";
@@ -15,34 +14,31 @@ import BusinessIcon from "../../assets/icons/business.png"
 import {Switch} from "@material-ui/core";
 import CrudDialog from "../../components/dialogs/CrudDialog";
 import ChallengeForm from "./ChallengeForm";
+import {firestoreCrudService} from "../../services/firestoreCrudService";
 
 
-const service = localCrudService<Challenge>('challenges');
 export const ChallengeListPage = () => {
 
-    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete} = useListQuery<Challenge>({
-        ...service,
-        readAll: async () => {
-            const response = await service.readAll();
-            if (!response.success) return response;
-            response.value.sort((a, b) => {
-                if (a.checked && b.checked) {
-                    if (a.activity && b.activity) {
-                        return a.activity.localeCompare(b.activity);
-                    }
-                    return a.name.localeCompare(b.name);
-                }
-                if (a.checked) {
-                    return 1;
-                }
-                if (b.checked) {
-                    return -1;
-                }
-                return 0;
-            })
-            return response;
+    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete} = useListQuery<Challenge>(firestoreCrudService('challenges', (a, b) => {
+        if ((a.checked && b.checked) || (!a.checked && !b.checked)) {
+            if ((a.activity && b.activity) || (!a.activity && !b.activity)) {
+                return a.name.localeCompare(b.name);
+            }
+            if (a.activity) {
+                return -1;
+            }
+            if (b.activity) {
+                return 1;
+            }
         }
-    });
+        if (a.checked) {
+            return 1;
+        }
+        if (b.checked) {
+            return -1;
+        }
+        return 0;
+    }));
 
     const [search, setSearch] = useState<string>('');
     const [showCompleted, setShowCompleted] = useState(true);

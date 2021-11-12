@@ -4,7 +4,7 @@ import {addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc} from "fi
 import {db} from "./firebase";
 import CrudService from "./CrudService";
 
-export const firestoreCrudService = <T extends Identifiable>(col: string): CrudService<T> => {
+export const firestoreCrudService = <T extends Identifiable>(col: string, compare?: (a: T, b: T) => number): CrudService<T> => {
     return {
         path: col,
         create: async (e) => {
@@ -24,7 +24,7 @@ export const firestoreCrudService = <T extends Identifiable>(col: string): CrudS
                 ...doc.data(),
                 id: doc.id,
             } as T));
-            console.log("crudService", col, "readAll", e)
+            if (!!compare) e.sort(compare);
             return successResponse(e);
         },
         update: async (e) => {
