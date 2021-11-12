@@ -107,7 +107,7 @@ export const CrudDialog = <T extends Partial<Identifiable>, >({children, title, 
                     <Button onClick={onCancel}>
                         <div style={{display: 'flex', alignItems: 'start', textAlign: 'center'}}>
                             <CloseLineIcon size={20} style={{marginRight: '4px', color: theme.palette.error.main}}/>
-                            ANNULLER
+                            Cancel
                         </div>
                     </Button>
                     <Button onClick={handleSaveClick}>

@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import {Divider, ListItem, ListItemText, MenuItem, MenuList} from "@material-ui/core";
+import {Divider, ListItem, ListItemText, MenuItem} from "@material-ui/core";
 import MenuFilterOption from "./MenuFilterOption";
 import {Filter, FilterCategory, FilterGroup, SelectedFilter, SingleFilter} from "./ReportFilter";
 import ScrollMenuList from "../material/ScrollMenuList";
 
-interface FilterOptionMenuList {
+interface FilterOptionMenuListProps {
     category: FilterCategory;
     selected: SelectedFilter[];
     onClick: (group: FilterGroup, single: SingleFilter) => void;
@@ -14,7 +14,7 @@ const isGroup = (test: Filter): test is FilterGroup => {
     return (test as FilterGroup).filters !== undefined;
 }
 
-const FilterOptionMenuList: React.FC<FilterOptionMenuList> = ({category, selected, onClick}) => {
+const FilterOptionMenuList: React.FC<FilterOptionMenuListProps> = ({category, selected, onClick}) => {
 
     const [selectedGroup, setSelectedGroup] = useState<string>();
     const handleSelect = (id: string) => (e: React.MouseEvent<HTMLLIElement>) => {

@@ -47,7 +47,6 @@ export interface LifeMapEntry {
     weeks?: number,
 }
 
-const michael = new Date(1996, 2, 7)
 
 export const LifeMapPage = () => {
 

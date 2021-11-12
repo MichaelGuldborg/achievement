@@ -27,17 +27,17 @@ export const climbing: Activity = {
             name: '30 days on the wall',
             type: '30-day',
             description: 'Complete a total of 30 days climbing. This can be done by completing any type of climbing session including anything from casual indoor bouldering to outdoor lead climbing',
-            isCompleted: true,
+            checked: true,
         }, {
             id: randomId(),
             name: 'Top rope certificate',
             description: 'Complete an introduction course to top rope climbing and get an official certificate',
-            isCompleted: true,
+            checked: true,
         }, {
             id: randomId(),
             name: 'Buy your first climbing shoes',
             description: 'Pretty self explanatory, but theres a lot of things to consider when making this decision so make sure to check out the material to make an educated decision',
-            isCompleted: true,
+            checked: true,
         }]
     }, {
         id: randomId(),
@@ -46,7 +46,7 @@ export const climbing: Activity = {
             id: randomId(),
             name: 'Lead climbing certificate',
             description: 'Complete a course in lead climbing and get an official certificate',
-            isCompleted: false,
+            checked: false,
         }],
     }, {
         id: randomId(),
@@ -55,7 +55,7 @@ export const climbing: Activity = {
             id: randomId(),
             name: 'Complete a 7a boulder',
             description: 'Complete a boulder graded 7a or higher',
-            isCompleted: false,
+            checked: false,
         }],
     }]
 }

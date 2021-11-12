@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Route, Router, Switch} from "react-router-dom";
+import {Route, Router, Switch} from "react-router-dom";
 import Routes from "./constants/Routes";
 import ErrorPage from "./pages/error/ErrorPage";
 import {TestPage} from "./pages/error/TestPage";
@@ -47,9 +47,6 @@ function App() {
                                     <Route path={Routes.test} component={TestPage}/>
 
 
-                                    <Route path={Routes.landing}>
-                                        <Redirect to={Routes.home}/>
-                                    </Route>
                                     <Route path="*" component={NotFoundPage}/>
                                 </Switch>
                             </Router>

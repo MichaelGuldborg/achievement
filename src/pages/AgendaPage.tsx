@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Checkbox, InputBase} from "@material-ui/core";
-import confetti from "canvas-confetti";
+import {InputBase} from "@material-ui/core";
 import {randomId} from "../lib/math/randomId";
 import CheckLineIcon from "remixicon-react/CheckLineIcon";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 
-export const currentUserCollection = (col?: string) => {
-    const currentUserId = '6m5nIL8gRMQ0zGkfXwXfNcE87Wm2';
-    const path = `users/${currentUserId}`;
-    return !col ? path : path + col;
-}
 
 export interface CheckList {
     id: string;
@@ -185,24 +179,10 @@ export const AgendaPage: React.FC = () => {
                     {/*}}/> : <span style={{*/}
                     {/*    width: 24,*/}
                     {/*}}/>}*/}
-                    <div
+                    <CheckIcon
+                        checked={item.checked}
                         onClick={() => checkItem(index)}
-                        style={{
-                            width: 20,
-                            height: 20,
-                            marginRight: 8,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            border: item.checked ? '1px #ccc solid' : '1px #aaa solid',
-                            borderRadius: 4,
-                            cursor: 'pointer',
-                        }}>
-                        {item.checked ? <CheckLineIcon
-                            style={{width: 20}}
-                            color={'green'}
-                        /> : <span/>}
-                    </div>
+                    />
                     <InputBase
                         id={`field-${index}`}
                         defaultValue={item.name}
@@ -384,7 +364,7 @@ export const AgendaPage: React.FC = () => {
                                 {checkList.items.map((item, index) => {
                                     return (
                                         <Draggable key={item.id} draggableId={item.id} index={index}>
-                                            {(provided, snapshot) => (
+                                            {(provided) => (
                                                 <div
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
@@ -409,83 +389,41 @@ export const AgendaPage: React.FC = () => {
     )
 }
 
-const popConfetti = (e: { clientX: number, clientY: number }) => {
-    const x = e.clientX / window.screen.width;
-    const y = (e.clientY - 20) / window.screen.height;
-    confetti({
-        origin: {x: x, y: y},
-        particleCount: 50,
-        startVelocity: 25,
-        spread: 360,
-        ticks: 40,
-        zIndex: 0,
-    })
-}
+// const popConfetti = (e: { clientX: number, clientY: number }) => {
+//     const x = e.clientX / window.screen.width;
+//     const y = (e.clientY - 20) / window.screen.height;
+//     confetti({
+//         origin: {x: x, y: y},
+//         particleCount: 50,
+//         startVelocity: 25,
+//         spread: 360,
+//         ticks: 40,
+//         zIndex: 0,
+//     })
+// }
 
-export const TodoList: React.FC<{
-    title: string;
-    items: { id: string; name: string; checked?: boolean, [p: string]: any }[];
-}> = ({title, items}) => {
 
-    const [todoList, setTodoList] = useState(items);
+export const CheckIcon: React.FC<{ checked?: boolean; onClick?: VoidFunction }> = ({onClick, checked}) => {
     return (
-        <div>
-            <div style={{
-                paddingLeft: 4,
-                marginBottom: 16,
-
-                fontSize: 28,
-                fontWeight: 600,
+        <div
+            onClick={onClick}
+            style={{
+                width: 20,
+                height: 20,
+                marginRight: 8,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                border: checked ? '1px #ccc solid' : '1px #aaa solid',
+                borderRadius: 4,
+                cursor: 'pointer',
             }}>
-                {title}
-            </div>
-            <div style={{display: 'flex'}}>
-                {/*<div style={{backgroundColor: '#000', width: 2, height: '100%'}}/>*/}
-                <div>
-                    {todoList.map((todo, index) => {
-                        return <div>
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                            }}>
-                                <Checkbox
-                                    style={{
-                                        // color: todo.checked ? '#66bb6a' : undefined,
-                                        color: todo.checked ? '#aaa' : undefined,
-                                    }}
-                                    checked={todo.checked}
-                                    onClick={(e) => {
-                                        const checked = !todo.checked;
-                                        if (checked) popConfetti(e);
-                                        const nextTodoList = [...todoList];
-                                        nextTodoList[index].checked = checked;
-                                        setTodoList(nextTodoList)
-                                    }}
-                                />
-                                <span style={{
-                                    fontSize: 18,
-                                    fontWeight: 500,
-                                    textDecoration: todo.checked ? 'line-through' : undefined,
-                                }}>{todo.name}</span>
-                            </div>
-
-                        </div>;
-                    })}
-                </div>
-            </div>
-
+            {checked ? <CheckLineIcon
+                style={{width: 20}}
+                color={'green'}
+            /> : <span/>}
         </div>
-
     )
-}
-
-function clickTab() {
-    const TAB_KEY = 13;
-    const keyboardEvent: any = document.createEvent("KeyboardEvent");
-    const initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
-    keyboardEvent[initMethod]("keydown", true, true, window, 0, 0, 0, 0, 0, TAB_KEY);
-    document.dispatchEvent(keyboardEvent);
 }
 
 export default AgendaPage;

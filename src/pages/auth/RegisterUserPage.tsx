@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterUserForm, {RegisterUserRequest} from "./RegisterUserForm";
+import RegisterUserForm from "./RegisterUserForm";
 import LogoPage from "../../components/containers/LogoPage";
 
 export const RegisterUserPage: React.FC = () => {

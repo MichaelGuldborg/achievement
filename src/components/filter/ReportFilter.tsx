@@ -1,12 +1,7 @@
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import AddLineIcon from "remixicon-react/AddLineIcon";
 import React, {useState} from "react";
 import Button from "@material-ui/core/Button";
-import {
-    Divider, ListItemIcon, ListItemText,
-    MenuItem,
-    Popover, PopoverOrigin,
-} from "@material-ui/core";
+import {Divider, ListItemIcon, ListItemText, MenuItem, Popover, PopoverOrigin,} from "@material-ui/core";
 import filterOptions, {filterCategories, filterGroups, singleFilters} from "./filterOptions";
 import FilterOptionMenuList from "./FilterOptionMenuList";
 import SelectedFilterMenuList from "./SelectedFilterMenuList";
@@ -157,8 +152,8 @@ const ReportFilter: React.FC = () => {
                 </div>
                 <Divider orientation="horizontal"/>
                 <div className={classes.actionContainer}>
-                    <TextButton onClick={handleCancel}>Annuller</TextButton>
-                    <TextButton color="primary" onClick={handleApply}>Anvend</TextButton>
+                    <TextButton onClick={handleCancel}>Cancel</TextButton>
+                    <TextButton color="primary" onClick={handleApply}>Apply</TextButton>
                 </div>
             </Popover>
         </React.Fragment>

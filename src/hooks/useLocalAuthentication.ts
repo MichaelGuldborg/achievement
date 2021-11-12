@@ -14,7 +14,7 @@ export const useLocalAuthentication = (onResponse: (response: RestErrorResponse 
             onResponse(response);
         }
         signInWithAccessToken();
-    }, [])
+    }, [onResponse])
     return {
         setCredentials: (email: string, password: string) => {
             localStorage.setItem('email', email)

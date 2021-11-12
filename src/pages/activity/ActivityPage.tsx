@@ -21,11 +21,12 @@ export const ActivityPage = () => {
     const [activity, setActivity] = useActivity(activityId);
     const [levelIndex, setLevelIndex] = useState<number>(0)
 
-    const updateChallengeComplete = (levelIndex: number, challengeIndex: number, isCompleted: boolean) => {
+    const updateChallengeComplete = (levelIndex: number, challengeIndex: number, checked: boolean) => {
         const updatedActivity = {...activity};
-        updatedActivity.levels[levelIndex].challenges[challengeIndex].isCompleted = isCompleted;
+        updatedActivity.levels[levelIndex].challenges[challengeIndex].checked = checked;
         setActivity(updatedActivity)
     }
+
 
 
     if (!activity) return <div/>
@@ -68,7 +69,7 @@ export const ActivityPage = () => {
                                         alignItems: 'center',
                                         fontSize: 16,
                                     }}>
-                                        {e.challenges.find(c => !c.isCompleted) ?
+                                        {e.challenges.find(c => !c.checked) ?
                                             <CheckboxBlankCircleLineIcon size={26} color={theme.palette.primary.main}/>
                                             : <CheckboxCircleFillIcon size={26} color={theme.palette.primary.main}/>}
                                         <span style={{marginLeft: 8}}>
@@ -101,7 +102,7 @@ export const ActivityPage = () => {
                                             </IconButton>
                                             }
                                             <Checkbox
-                                                checked={e.isCompleted}
+                                                checked={e.checked}
                                                 onChange={(e, c) => updateChallengeComplete(levelIndex, challengeIndex, c)}
                                             />
                                         </div>

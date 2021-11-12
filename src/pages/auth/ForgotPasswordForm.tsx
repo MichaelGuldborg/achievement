@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {Field, Form, Formik} from "formik";
 import TextField from "@material-ui/core/TextField/TextField";
 import Box from "@material-ui/core/Box";
-import FormButton from "../../components/buttons/FormButton";
 import {Alert} from "@material-ui/lab";
 import {Button, Typography} from "@material-ui/core";
 import ArrowGoBackLineIcon from "remixicon-react/ArrowGoBackLineIcon";
@@ -18,7 +17,7 @@ export interface ForgotPasswordFormValues {
 }
 
 const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = () => {
-    const [sendtRequest, setSendtRequest] = useState<boolean>(false);
+    const [sentRequest] = useState<boolean>(false);
 
     const onSubmit = async (values: ForgotPasswordFormValues) => {
         // const response = await services.auth.forgotPassword(values.email);
@@ -72,7 +71,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = () => {
                     </Form>
                 )}
             </Formik>
-            {sendtRequest && (
+            {sentRequest && (
                 <Alert severity={'success'}>
                     Vi har sendt dig en mail med information om hvordan du nulstiller din adgangskode
                 </Alert>

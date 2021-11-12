@@ -1,8 +1,9 @@
 import React from 'react';
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {navigationList} from "../../constants/NavigationList";
 import history from "../../history";
 import {useLocalRoute} from "../../hooks/useLocalAuthentication";
+import Routes from "../../constants/Routes";
 
 export const HomeSwitch = () => {
     const [, setRoute] = useLocalRoute();
@@ -10,13 +11,16 @@ export const HomeSwitch = () => {
 
     return (
         <Switch>
-            {[...navigationList].reverse().map(e => {
+            {navigationList.map(e => {
                 return (
                     <Route key={e.path} path={e.path}>
                         <e.component/>
                     </Route>
                 )
             })}
+            <Route path={Routes.home}>
+                <Redirect to={Routes.homeLanding}/>
+            </Route>
         </Switch>
     )
 }

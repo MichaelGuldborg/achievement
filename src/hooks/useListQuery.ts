@@ -1,12 +1,15 @@
 import Identifiable from "../models/Identifyable";
 import {useQuery, useQueryClient} from "react-query";
-import {CrudService} from "../services/database";
+import CrudService from "../services/CrudService";
+import {createRef, useState} from "react";
 
 
 export const useListQuery = <T extends Identifiable, >(service: CrudService<T>) => {
     const queryClient = useQueryClient();
     const queryKey = service.path;
 
+    const [selected, setSelected] = useState<T | undefined>();
+    const submitButtonRef = createRef<HTMLButtonElement>();
     const query = useQuery<T[]>({
         queryKey: queryKey,
         queryFn: async () => {
@@ -27,7 +30,7 @@ export const useListQuery = <T extends Identifiable, >(service: CrudService<T>) 
         const previous = queryClient.getQueryData(queryKey)
         const next = queryClient.setQueryData(queryKey, (old: unknown) => {
             if (!Array.isArray(old)) return [value];
-            return [...old, value];
+            return [value, ...old];
         })
         return {previous, next}
     }
@@ -35,6 +38,9 @@ export const useListQuery = <T extends Identifiable, >(service: CrudService<T>) 
     return {
         query: query,
         elements: query.data ?? [],
+        selected,
+        setSelected,
+        submitButtonRef,
         onCreate: onCreate,
         onUpdate: async (value: T) => {
             if (!value.id) return onCreate(value);
@@ -54,7 +60,7 @@ export const useListQuery = <T extends Identifiable, >(service: CrudService<T>) 
             })
             return {previous}
         },
-        onDelete: async (value: T | string) => {
+        onDelete: async (value: { id?: string } | string) => {
             await queryClient.cancelQueries(queryKey)
 
             const response = await service.delete(value);

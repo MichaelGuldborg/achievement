@@ -14,7 +14,6 @@ import BasePage from "../../components/containers/BasePage";
 export const Challenge30DayPage = () => {
 
 
-    const now = new Date()
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [date, setDate] = useState(new Date());
     const [isDateEnabled, setIsDateEnabled] = useState<boolean>(false)
@@ -49,7 +48,7 @@ export const Challenge30DayPage = () => {
                                     return <div style={{display: 'flex'}}>
                                         {Array.from({length: 10}).map((_, j) => {
                                             const index = i * 10 + j;
-                                            const indexLabel = index + 1
+                                            // const indexLabel = index + 1
                                             const checked = selectedIndex > index;
                                             const indexDate = addDays(date, index);
                                             return <div

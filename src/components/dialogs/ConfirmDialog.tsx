@@ -26,7 +26,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({title, open, onClose, dial
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} style={{color: theme.palette.error.main}}>
-                    Annuller
+                    Cancel
                 </Button>
                 <Button onClick={onConfirm} disabled={disabled} style={{color: theme.palette.success.main}} autoFocus>
                     OK

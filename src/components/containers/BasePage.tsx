@@ -11,11 +11,10 @@ const useStyles = makeStyles<CustomTheme>((theme) => ({
         justifyContent: 'flex-start',
         alignItems: "start",
         position: 'relative',
-        marginTop: 32,
-        padding: theme.spacing(4, 2, 2, 2),
+        padding: theme.spacing(2, 4, 2, 4),
         [theme.breakpoints.down("sm")]:{
-            // justifyContent: 'center',
-            paddingTop: theme.spacing(4),
+            justifyContent: 'center',
+            paddingTop: theme.spacing(2),
         }
     }
 }))

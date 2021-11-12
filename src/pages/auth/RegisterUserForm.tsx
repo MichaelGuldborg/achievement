@@ -24,7 +24,9 @@ export const RegisterUserForm: React.FC = () => {
 
     const onSubmit = async (values: RegisterUserRequest) => {
         const response = await auth.registerWithEmail(values);
-        history.push(Routes.home);
+        if (response.success) {
+            history.push(Routes.home);
+        }
     }
 
 

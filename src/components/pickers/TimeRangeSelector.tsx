@@ -4,15 +4,17 @@ import {Divider, Popover, Typography} from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
 import {
-    startOfMonth,
     endOfMonth,
-    endOfQuarter, endOfWeek,
+    endOfQuarter,
+    endOfWeek,
     endOfYear,
+    startOfMonth,
     startOfQuarter,
     startOfWeek,
     startOfYear,
     subMonths,
-    subQuarters, subWeeks,
+    subQuarters,
+    subWeeks,
     subYears
 } from "date-fns";
 import CalendarTodoLineIcon from "remixicon-react/CalendarTodoLineIcon";
@@ -20,8 +22,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import useTheme from "@material-ui/core/styles/useTheme";
 import useURIData from "../../hooks/useURIData";
 import {DatePicker} from "@material-ui/pickers";
-import ArrowGoBackLineIcon from "remixicon-react/ArrowGoBackLineIcon";
-import {ArrowLeftIcon} from "@material-ui/pickers/_shared/icons/ArrowLeftIcon";
 import ArrowLeftLineIcon from "remixicon-react/ArrowLeftLineIcon";
 
 const useStyles = makeStyles((theme) => ({

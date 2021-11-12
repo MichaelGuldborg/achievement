@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Field, Form, Formik} from "formik";
 import TextField from "@material-ui/core/TextField/TextField";
-import FormButton from "../../components/buttons/FormButton";
 import {Alert} from "@material-ui/lab";
 import Validators from "../../lib/Validators";
 import Button from "@material-ui/core/Button";
@@ -20,7 +19,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = () => {
     // const params = qs.parse(paramsSearch ?? '', {ignoreQueryPrefix: true});
     // const token = "" + params['token'];
 
-    const [sendtRequest, setSendtRequest] = useState<boolean>(false);
+    const [sentRequest] = useState<boolean>(false);
 
     const onSubmit = async (values: ResetPasswordFormValues) => {
         // const response = await services.auth.resetPassword(values.password, values.token);
@@ -87,7 +86,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = () => {
                     </Form>
                 )}
             </Formik>
-            {sendtRequest && (
+            {sentRequest && (
                 <Alert severity={'success'}>
                     Din adgangskode er succesfuldt blevet ændret
                 </Alert>

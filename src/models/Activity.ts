@@ -33,10 +33,13 @@ export interface ActivityLevel {
 
 export interface Challenge {
     id: string;
+    activity?: string;
+    level?: string;
     name: string;
     type?: '30-day'
-    description: string;
-    isCompleted?: boolean;
+    description?: string;
+    checked?: boolean
+    hidden?: boolean;
 }
 
 export const getMaxCompletedLevel = (a: Activity) => {
@@ -50,7 +53,7 @@ export const getMaxCompletedLevel = (a: Activity) => {
 }
 
 export const isLevelComplete = (l: ActivityLevel) => {
-    return !l.challenges.find(e => !e.isCompleted)
+    return !l.challenges.find(e => !e.checked)
 }
 
 

@@ -8,7 +8,6 @@ import CrudDialog from "../../components/dialogs/CrudDialog";
 import HabitForm from "./HabitForm";
 import useSubmitButtonRef from "../../hooks/useSubmitButtonRef";
 import {useListQuery} from "../../hooks/useListQuery";
-import {crudService} from "../../services/database";
 import AddLineIcon from "remixicon-react/AddLineIcon";
 import Habit, {defaultHabit} from "../../models/Habit";
 import {useCurrentUser} from "../../hooks/useCurrentUser";
@@ -16,6 +15,7 @@ import BasePage from "../../components/containers/BasePage";
 import IconButton from "@material-ui/core/IconButton";
 import VisibilityIcon from 'remixicon-react/Eye2LineIcon';
 import VisibilityOffIcon from 'remixicon-react/EyeCloseLineIcon';
+import {firestoreCrudService} from "../../services/firestoreCrudService";
 
 
 export const currentUserCollection = (col?: string) => {
@@ -33,7 +33,7 @@ export const HabitsPage: React.FC = () => {
 
     const [submitButtonRef] = useSubmitButtonRef();
     const [editElement, setEditElement] = useState<Habit | undefined>(undefined)
-    const {elements, onUpdate, onDelete} = useListQuery<Habit>(crudService(collection))
+    const {elements, onUpdate, onDelete} = useListQuery<Habit>(firestoreCrudService(collection))
     elements.sort((a, b) => {
         if (!a.startTime || !b.startTime) return 0;
         return a.startTime.localeCompare(b.startTime);

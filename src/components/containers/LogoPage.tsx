@@ -3,7 +3,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Box, Grid} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import VersionTag from "../../components/displays/VersionTag";
-import LogoIcon from "../../assets/Icon_white_500px.png"
 
 const useStyles = makeStyles((theme) => ({
     root: {
