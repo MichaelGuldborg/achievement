@@ -57,7 +57,11 @@ export const ChallengeListPage = () => {
     })
 
     const onCheckClick = (challenge: Challenge) => (e: any) => {
-        if (!challenge.checked) popConfetti(e);
+        if (!challenge.checked) setTimeout(() => {
+            // const audio = new Audio("/assets/audio/pop.mp3");
+            // audio.play();
+            popConfetti(e);
+        }, 100);
         onUpdate({
             ...challenge,
             checked: !challenge.checked

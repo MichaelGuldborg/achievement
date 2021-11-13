@@ -1,13 +1,18 @@
 import {errorResponse, successResponse} from "../models/RestResponse";
-import Identifiable from "../models/Identifyable";
 import {addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc} from "firebase/firestore";
 import {db} from "./firebase";
 import CrudService from "./CrudService";
 
-export const firestoreCrudService = <T extends Identifiable>(col: string, compare?: (a: T, b: T) => number): CrudService<T> => {
+export const firestoreCrudService = <T extends {
+    id: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}>(col: string, compare?: (a: T, b: T) => number): CrudService<T> => {
     return {
         path: col,
         create: async (e) => {
+            e.createdAt = new Date();
+            e.updatedAt = new Date();
             const snapshot = await addDoc(collection(db, col), e);
             e.id = snapshot.id;
             return successResponse(e);
@@ -28,6 +33,7 @@ export const firestoreCrudService = <T extends Identifiable>(col: string, compar
             return successResponse(e);
         },
         update: async (e) => {
+            e.updatedAt = new Date();
             await updateDoc(doc(db, col, e.id), e);
             return successResponse(e);
         },
