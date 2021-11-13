@@ -33,8 +33,9 @@ export const ChallengePage = () => {
 
             <div style={{position: 'relative', overflow: 'hidden'}}>
                 <Banner
+                    position={'top-left'}
                     size={24}
-                    color={activityLevelMap[value.level ?? ''].color}
+                    color={activityLevelMap[value.level ?? '']?.color}
                 />
 
 
