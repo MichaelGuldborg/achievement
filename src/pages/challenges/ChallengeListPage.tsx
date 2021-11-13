@@ -142,8 +142,8 @@ export const ChallengeListPage = () => {
                             <div style={{display: 'flex', alignItems: 'center'}}>
                                 <div
                                     onClick={() => {
-                                        history.push(Routes.challenge.replace(':challengeId', challenge.id))
-                                        // setSelected(challenge);
+                                        // history.push(Routes.challenge.replace(':challengeId', challenge.id))
+                                        setSelected(challenge);
                                     }}
                                     style={{
                                         flex: 1,
