@@ -258,21 +258,21 @@ export const challenges: Challenge[] = [
     // running
     {
         id: randomId(),
-        activity: 'run',
+        activity: 'running',
         level: 'beginner',
         name: 'Walk 100 kilometers in less than 24 hours',
         checked: true,
     },
     {
         id: randomId(),
-        activity: 'run',
+        activity: 'running',
         level: 'beginner',
         name: 'Run a half marathon in less than 2 hours',
         checked: true,
     },
     {
         id: randomId(),
-        activity: 'run',
+        activity: 'running',
         level: 'beginner',
         name: 'Run a marathon in less than 4 hours',
         checked: true,

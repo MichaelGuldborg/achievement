@@ -64,7 +64,12 @@ export const CreateButton: React.FC<{ text: string; onClick: VoidFunction }> = (
                 </Button>
             </Hidden>
             <Hidden smUp>
-                <div style={{position: 'fixed', bottom: 16, right: 16}}>
+                <div style={{
+                    position: 'fixed',
+                    bottom: 16,
+                    right: 16,
+                    zIndex: 100,
+                }}>
                     <Fab
                         onClick={onClick}
                         color="primary"

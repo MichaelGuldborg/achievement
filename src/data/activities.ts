@@ -2,9 +2,77 @@ import {Activity} from "../models/Activity";
 import climbing from "./activities/climbing";
 import weightLifting from "./activities/weightLifting";
 import {randomId} from "../lib/math/randomId";
+import ClimbingIcon from "../assets/icons/climbing.png";
+import WeightLiftingIcon from "../assets/icons/weightlifting.png";
+import GymnasticsIcon from "../assets/icons/gymnastics.png";
+import CalisthenicsIcon from "../assets/icons/calisthenics.png";
+import FlexibilityIcon from "../assets/icons/flexibility.png";
+import BusinessIcon from "../assets/icons/business.png";
+import SpiritualIcon from "../assets/icons/spiritual.png";
+import IntellectIcon from "../assets/icons/intellect.png";
+import SkateboardIcon from "../assets/icons/skateboard.png"
+import ExtremeSportIcon from "../assets/icons/skydiving.png"
+import RunningIcon from "../assets/icons/running.png"
+import {toIdValueMap} from "../lib/map/toIdValueMap";
+import Colors from "../constants/Colors";
 
 
+export const activityTypes = [{
+    id: 'running',
+    icon: RunningIcon,
+},{
+    id: 'climbing',
+    icon: ClimbingIcon,
+}, {
+    id: 'weightlifting',
+    icon: WeightLiftingIcon,
+}, {
+    id: 'gymnastics',
+    icon: GymnasticsIcon,
+}, {
+    id: 'calisthenics',
+    icon: CalisthenicsIcon,
+}, {
+    id: 'flexibility',
+    icon: FlexibilityIcon,
+}, {
+    id: 'business',
+    icon: BusinessIcon,
+}, {
+    id: 'spiritual',
+    icon: SpiritualIcon,
+}, {
+    id: 'intellect',
+    icon: IntellectIcon,
+}, {
+    id: 'skateboard',
+    icon: SkateboardIcon,
+}, {
+    id: 'extreme-sport',
+    icon: ExtremeSportIcon,
+}]
 
+export const activityLevels = [{
+    id: 'beginner',
+    color: Colors.green,
+    index: 0,
+}, {
+    id: 'intermediate',
+    color: Colors.yellow,
+    index: 1,
+}, {
+    id: 'experienced',
+    color: Colors.orange,
+    index: 2,
+}, {
+    id: 'expert',
+    color: Colors.red,
+    index: 3,
+}]
+
+
+export const activityLevelMap = toIdValueMap(activityLevels)
+export const activityTypesMap = toIdValueMap(activityTypes)
 
 
 export const activities: Activity[] = [

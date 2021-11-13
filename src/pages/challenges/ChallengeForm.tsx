@@ -6,9 +6,9 @@ import SelectNamed from "../../components/inputs/SelectNamed";
 import React from "react";
 import FormProps from "../../models/FormProps";
 import {Challenge} from "../../models/Activity";
-import {activityIcons} from "./ChallengeListPage";
 import capitalize from "@material-ui/core/utils/capitalize";
 import {CheckIcon} from "../AgendaPage";
+import {activityTypes} from "../../data/activities";
 
 
 export const ChallengeForm: React.FC<FormProps<Challenge>> = ({onSubmit, initial, submitButtonRef}) => {
@@ -42,9 +42,9 @@ export const ChallengeForm: React.FC<FormProps<Challenge>> = ({onSubmit, initial
                                     name="activity"
                                     // label="Activity"
                                     variant="outlined"
-                                    options={Object.keys(activityIcons).map(e => ({
-                                        id: e,
-                                        name: capitalize(e),
+                                    options={activityTypes.map(e => ({
+                                        id: e.id,
+                                        name: capitalize(e.id),
                                     }))}
                                     fullWidth
                                 />
