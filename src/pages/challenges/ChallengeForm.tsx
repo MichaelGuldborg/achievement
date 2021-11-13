@@ -40,7 +40,6 @@ export const ChallengeForm: React.FC<FormProps<Challenge>> = ({onSubmit, initial
                                 <Field
                                     as={SelectNamed}
                                     name="activity"
-                                    // label="Activity"
                                     variant="outlined"
                                     options={activityTypes.map(e => ({
                                         id: e.id,

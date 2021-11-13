@@ -1,5 +1,5 @@
 import {errorResponse, successResponse} from "../models/RestResponse";
-import {addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc} from "firebase/firestore";
+import {addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc} from "firebase/firestore";
 import {db} from "./firebase";
 import CrudService from "./CrudService";
 
@@ -10,6 +10,11 @@ export const firestoreCrudService = <T extends {
 }>(col: string, compare?: (a: T, b: T) => number): CrudService<T> => {
     return {
         path: col,
+        set: async (e) => {
+            e.updatedAt = new Date();
+            await setDoc(doc(db, col, e.id), e);
+            return successResponse(e);
+        },
         create: async (e) => {
             e.createdAt = new Date();
             e.updatedAt = new Date();

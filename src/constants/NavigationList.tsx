@@ -8,7 +8,7 @@ import HomeLandingPage from "../pages/home_landing/HomeLandingPage";
 import ActivityPage from "../pages/activity/ActivityPage";
 import Challenge30DayPage from "../pages/activity/Challenge30DayPage";
 import LifeMapPage from "../pages/lifemap/LifeMapPage";
-import HabitsPage from "../pages/habits/HabitsPage";
+import RoutinePage from "../pages/habits/RoutinePage";
 import AgendaPage from '../pages/AgendaPage';
 import ChallengeListPage from "../pages/challenges/ChallengeListPage";
 
@@ -22,7 +22,6 @@ export interface ActionNavItem {
 export interface NavItem {
     name: string;
     showRedDot?: boolean;
-    checkRedDot?: boolean;
     external?: boolean;
     scroll?: boolean;
     icon: RemixiconReactIconComponentType;
@@ -50,32 +49,20 @@ export const navigationList: NavItem[] = [
     {
         name: "Challenges",
         icon: HomeLineIcon,
-        path: Routes.challanges,
+        path: Routes.challenges,
         component: ChallengeListPage,
     },
-    {
-        name: "Agenda",
-        icon: HomeLineIcon,
-        path: Routes.agenda,
-        component: AgendaPage,
-    },
+    // {
+    //     name: "Agenda",
+    //     icon: HomeLineIcon,
+    //     path: Routes.agenda,
+    //     component: AgendaPage,
+    // },
     {
         name: "Routine",
         icon: HomeLineIcon,
         path: Routes.habits,
-        component: HabitsPage,
-    },
-    {
-        name: "Activity",
-        icon: HomeLineIcon,
-        path: Routes.activity,
-        component: ActivityPage,
-    },
-    {
-        name: "30 Day Challenge",
-        icon: HomeLineIcon,
-        path: Routes.challenge30Day,
-        component: Challenge30DayPage,
+        component: RoutinePage,
     },
     {
         name: "Storyline",
@@ -83,6 +70,12 @@ export const navigationList: NavItem[] = [
         path: Routes.lifeMap,
         component: LifeMapPage,
     },
+    // {
+    //     name: "30 Day Challenge",
+    //     icon: HomeLineIcon,
+    //     path: Routes.challenges30Day,
+    //     component: Challenge30DayPage,
+    // },
 ];
 
 

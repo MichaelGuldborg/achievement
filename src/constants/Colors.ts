@@ -1,5 +1,7 @@
 class Colors {
 
+    static readonly primary = '#F57058';
+
     static readonly white = '#ffffff'
     static readonly black = '#151F29'
     static readonly grey = '#EFF2F5'

@@ -6,33 +6,37 @@ import PopoverDatePicker from "../../components/pickers/PopoverDatePicker";
 import {toLocalDateMothYearString} from "../../lib/date/toLocalISO";
 import {addDays} from "date-fns";
 import CheckLineIcon from "remixicon-react/CheckLineIcon";
-import {randomId} from "../../lib/math/randomId";
+import {useParams} from "react-router-dom";
+import {useCrudQuery} from "../../hooks/useCrudQuery";
+import {firestoreCrudService} from "../../services/firestoreCrudService";
 
+export interface Challenge30Day {
+    id: string;
+    name: string;
+    checkIndex: number;
+    start: Date;
+}
 
 export const Challenge30DayPage = () => {
 
+    const {challengeId} = useParams<{ challengeId: string }>();
+    const {value, onSet} = useCrudQuery<Challenge30Day>(challengeId, firestoreCrudService('challenges-30-day'))
+    const challenge: Challenge30Day = value || {id: challengeId, name: '', checkIndex: 0, start: new Date()};
 
-    const [challenge, setChallenge] = useState({
-        id: randomId(),
-        name: 'No fap',
-        checkIndex: 0,
-        start: new Date(),
-    })
 
-    const setStartDate = (date: any) => {
-        setChallenge((prev) => ({
-            ...prev,
+    const setStartDate = async (date: Date) => {
+        await onSet({
+            ...challenge,
             start: date,
-        }))
+        })
     }
 
-    const setCheckIndex = (index: number) => {
-        setChallenge((prev) => ({
-            ...prev,
+    const setCheckIndex = async (index: number) => {
+        await onSet({
+            ...challenge,
             checkIndex: index,
-        }))
+        })
     }
-
 
     const [showDate, setShowDate] = useState<boolean>(false)
 
@@ -42,7 +46,8 @@ export const Challenge30DayPage = () => {
     const [width, height] = isWindowTiny ? [3, 10] : isWindowSmall ? [5, 6] : [10, 3];
 
     return (
-        <div style={{width: '100vw', backgroundColor: 'white', paddingTop: 56}}>
+        <div style={{width: '100vw', backgroundColor: 'white'}}>
+            <div style={{height: 56, background: '#F7F7F7'}}/>
             <Container maxWidth={"md"}>
                 <div style={{
                     marginLeft: 16,
@@ -79,12 +84,20 @@ export const Challenge30DayPage = () => {
                     paddingRight: 16
                 }}>
                     {Array.from({length: height}).map((_, i) => {
-                        return <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 16}}>
+                        return <div
+                            key={`30-challenge-row-${i}`}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                marginBottom: 16
+                            }}
+                        >
                             {Array.from({length: width}).map((_, j) => {
                                 const index = i * width + j;
                                 const checked = challenge.checkIndex > index;
                                 const indexDate = addDays(challenge.start, index);
                                 return <div
+                                    key={`30-challenge-col-${j}`}
                                     style={{
                                         // flex: 1,
                                         display: 'flex',

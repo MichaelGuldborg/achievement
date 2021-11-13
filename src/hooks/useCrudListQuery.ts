@@ -4,7 +4,7 @@ import CrudService from "../services/CrudService";
 import {createRef, useState} from "react";
 
 
-export const useListQuery = <T extends Identifiable, >(service: CrudService<T>) => {
+export const useCrudListQuery = <T extends Identifiable, >(service: CrudService<T>) => {
     const queryClient = useQueryClient();
     const queryKey = service.path;
 
@@ -27,6 +27,7 @@ export const useListQuery = <T extends Identifiable, >(service: CrudService<T>) 
         if (!response.success) return;
 
         // naively update query state
+        value.id = response.value.id;
         const previous = queryClient.getQueryData(queryKey)
         const next = queryClient.setQueryData(queryKey, (old: unknown) => {
             if (!Array.isArray(old)) return [value];

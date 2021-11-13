@@ -4,6 +4,7 @@ import {navigationList} from "../../constants/NavigationList";
 import history from "../../history";
 import {useLocalRoute} from "../../hooks/useLocalAuthentication";
 import Routes from "../../constants/Routes";
+import Challenge30DayPage from "../activity/Challenge30DayPage";
 
 export const HomeSwitch = () => {
     const [, setRoute] = useLocalRoute();
@@ -11,6 +12,8 @@ export const HomeSwitch = () => {
 
     return (
         <Switch>
+            <Route path={Routes.challenges30Day} component={Challenge30DayPage}/>
+
             {navigationList.map(e => {
                 return (
                     <Route key={e.path} path={e.path}>
@@ -18,6 +21,8 @@ export const HomeSwitch = () => {
                     </Route>
                 )
             })}
+
+
             <Route path={Routes.home}>
                 <Redirect to={Routes.homeLanding}/>
             </Route>

@@ -97,7 +97,7 @@ export const ActivityPage = () => {
                                     >
                                         <h3 style={{margin: 0}}>{e.name}</h3>
                                         <div>
-                                            {e.type && <IconButton onClick={() => history.push(Routes.challenge30Day)}>
+                                            {e.type && <IconButton onClick={() => history.push(Routes.challenges30Day)}>
                                                 <ExternalLinkLineIcon/>
                                             </IconButton>
                                             }

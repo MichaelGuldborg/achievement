@@ -3,6 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Box, Grid} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import VersionTag from "../../components/displays/VersionTag";
+import Colors from "../../constants/Colors";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -10,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
     },
     image: {
         background: 'linear-gradient(to top left, #3a1c71, #d76d77, #ffaf7b)',
-        // background: 'linear-gradient(to right, #4b6cb7, #182848)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',

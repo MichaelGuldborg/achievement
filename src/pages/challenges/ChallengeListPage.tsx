@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Paper from "@material-ui/core/Paper";
 import BasePageToolbar, {CreateButton} from "../../components/containers/BasePageToolbar";
-import {useListQuery} from "../../hooks/useListQuery";
+import {useCrudListQuery} from "../../hooks/useCrudListQuery";
 import {challenges} from "../../data/challenges";
 import {Challenge} from "../../models/Activity";
 import {CheckIcon} from "../AgendaPage";
@@ -11,11 +11,14 @@ import ChallengeForm from "./ChallengeForm";
 import {firestoreCrudService} from "../../services/firestoreCrudService";
 import {activityLevelMap, activityTypesMap} from "../../data/activities";
 import popConfetti from "../../lib/popConfetti";
+import ExternalLinkLineIcon from "remixicon-react/ExternalLinkLineIcon";
+import history from "../../history";
+import Routes from "../../constants/Routes";
 
 
 export const ChallengeListPage = () => {
 
-    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete} = useListQuery<Challenge>(firestoreCrudService('challenges', (a, b) => {
+    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', (a, b) => {
         // sort non-checked first
         if (a.checked && !b.checked) {
             return 1;
@@ -61,7 +64,7 @@ export const ChallengeListPage = () => {
             // const audio = new Audio("/assets/audio/pop.mp3");
             // audio.play();
             popConfetti(e);
-        }, 100);
+        }, 200);
         onUpdate({
             ...challenge,
             checked: !challenge.checked
@@ -69,7 +72,8 @@ export const ChallengeListPage = () => {
     }
 
     return (
-        <div style={{backgroundColor: 'white', paddingTop: 56, width: '100vw'}}>
+        <div style={{backgroundColor: 'white', width: '100vw'}}>
+            <div style={{height: 56, backgroundColor: '#F7F7F7'}}/>
 
             <CrudDialog
                 submitButtonRef={submitButtonRef}
@@ -172,6 +176,13 @@ export const ChallengeListPage = () => {
                                         {challenge.name}
                                     </h3>
                                 </div>
+                                {challenge.name.toLowerCase().includes('nofap') && <div
+                                    style={{paddingRight: 16}}
+                                    onClick={() => history.push(Routes.challenges30Day.replace(':challengeId', challenge.id))}
+                                >
+                                    <ExternalLinkLineIcon/>
+                                </div>
+                                }
                                 <div style={{paddingRight: 16}} onClick={onCheckClick(challenge)}>
                                     <CheckIcon checked={challenge.checked}/>
                                 </div>

@@ -43,7 +43,7 @@ export const AgendaPage: React.FC = () => {
     // const currentUser = useCurrentUser();
     // const collection = `users/${currentUser?.id}/habits`;
     //
-    // const {elements, onUpdate, onDelete} = useListQuery<Habit>(crudService(collection));
+    // const {elements, onUpdate, onDelete} = useCrudListQuery<Habit>(crudService(collection));
     // elements.sort((a, b) => {
     //     if (!a.startTime || !b.startTime) return 0;
     //     return a.startTime.localeCompare(b.startTime);
