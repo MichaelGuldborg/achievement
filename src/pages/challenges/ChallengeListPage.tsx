@@ -5,7 +5,7 @@ import {useCrudListQuery} from "../../hooks/useCrudListQuery";
 import {challenges} from "../../data/challenges";
 import {Challenge} from "../../models/Activity";
 import {CheckIcon} from "../AgendaPage";
-import {Switch} from "@material-ui/core";
+import {Dialog, Switch} from "@material-ui/core";
 import CrudDialog from "../../components/dialogs/CrudDialog";
 import ChallengeForm from "./ChallengeForm";
 import {firestoreCrudService} from "../../services/firestoreCrudService";
@@ -45,12 +45,15 @@ export const ChallengeListPage = () => {
     }));
 
     const [search, setSearch] = useState<string>('');
-    const [showCompleted, setShowCompleted] = useState(true);
-    const [showHidden, setShowHidden] = useState(false);
+    const [filter, setFilter] = useState<{ [key: string]: any }>({
+        showChecked: true,
+        showHidden: false,
+    })
+
 
     const filteredElements = elements.filter((e) => {
-        if (!showCompleted && e.checked) return false;
-        if (!showHidden && e.hidden) return false;
+        if (!filter.showChecked && e.checked) return false;
+        if (!filter.showHidden && e.hidden) return false;
         if (search.trim().length !== 0) {
             return e.name.includes(search)
                 || e.activity?.includes(search)
@@ -105,20 +108,7 @@ export const ChallengeListPage = () => {
                         })
                     }}/>}
                 />
-                <div>
-                    Show completed
-                    <Switch
-                        value={showCompleted}
-                        onChange={() => setShowCompleted(!showCompleted)}
-                    />
-                </div>
-                <div>
-                    Show hidden
-                    <Switch
-                        value={showHidden}
-                        onChange={() => setShowHidden(!showHidden)}
-                    />
-                </div>
+                <FilterChips filter={filter} setFilter={(e) => setFilter(e)}/>
             </div>
             <div style={{paddingLeft: 16, paddingRight: 16, paddingBottom: 64}}>
                 <div style={{
@@ -201,5 +191,79 @@ export const ChallengeListPage = () => {
     )
 }
 
+
+export const FilterChips: React.FC<{
+    filter: { [k: string]: boolean },
+    setFilter: (filter: { [k: string]: boolean }) => void
+}> = ({filter, setFilter}) => {
+
+
+    const [open, setOpen] = React.useState<boolean>(false);
+
+    return (
+        <div
+            style={{
+                display: "flex",
+                alignItems: 'center',
+                cursor: 'pointer'
+            }}
+        >
+            {Object.keys(filter).map((key) => {
+                if (!filter[key]) return <div/>
+                return (
+                    <div style={{
+                        color: '#3758FA',
+                        fontSize: 14,
+                        fontWeight: 600,
+                        marginLeft: 6,
+                        border: '1px #3758FA solid',
+                        // borderStyle: 'dashed',
+                        borderRadius: 8,
+                        padding: '4px 8px',
+                    }}>
+                        {`${key}=${filter[key]}`}
+                    </div>
+                )
+            })}
+            <div
+                onClick={(e) => setOpen(true)}
+                style={{
+                    color: '#3758FA',
+                    fontSize: 14,
+                    fontWeight: 600,
+                    marginLeft: 6,
+                    border: '1px #3758FA solid',
+                    borderStyle: 'dashed',
+                    borderRadius: 8,
+                    padding: '4px 8px',
+                }}>
+                Add filter
+            </div>
+
+            <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+            >
+                <div style={{padding: '0px 16px'}}>
+                    {Object.keys(filter).map((e) => {
+                        return (
+                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                <div style={{flex: 1}}>
+                                    {e}
+                                </div>
+                                <Switch
+                                    checked={filter[e]}
+                                    onChange={() => setFilter({...filter, [e]: !filter[e]})}
+                                />
+                            </div>
+                        )
+                    })}
+                </div>
+            </Dialog>
+        </div>
+
+    )
+
+}
 
 export default ChallengeListPage;
