@@ -5,7 +5,7 @@ class Colors {
     static readonly white = '#ffffff'
     static readonly black = '#151F29'
     static readonly grey = '#EFF2F5'
-    static readonly textGrey = '#8D949F'
+    static readonly textGrey: '#8D949F'
     static readonly borderGrey = '#DCE2EB'
 
     static readonly lightBlue = '#00A5FF'

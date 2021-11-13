@@ -1,20 +1,18 @@
-import React, {useState} from "react";
-import Paper from "@material-ui/core/Paper";
+import React, {MouseEventHandler, useState} from "react";
 import BasePageToolbar, {CreateButton} from "../../components/containers/BasePageToolbar";
 import {useCrudListQuery} from "../../hooks/useCrudListQuery";
 import {challenges} from "../../data/challenges";
 import {Challenge} from "../../models/Activity";
 import {CheckIcon} from "../AgendaPage";
-import {Dialog, Switch} from "@material-ui/core";
 import CrudDialog from "../../components/dialogs/CrudDialog";
 import ChallengeForm from "./ChallengeForm";
 import {firestoreCrudService} from "../../services/firestoreCrudService";
 import {activityLevelMap, activityTypesMap} from "../../data/activities";
 import popConfetti from "../../lib/popConfetti";
-import ExternalLinkLineIcon from "remixicon-react/ExternalLinkLineIcon";
 import history from "../../history";
 import Routes from "../../constants/Routes";
-
+import ChallengeFilter from "./ChallengeFilter";
+import capitalize from "@material-ui/core/utils/capitalize";
 
 export const ChallengeListPage = () => {
 
@@ -64,15 +62,16 @@ export const ChallengeListPage = () => {
 
     const onCheckClick = (challenge: Challenge) => (e: any) => {
         if (!challenge.checked) setTimeout(() => {
-            // const audio = new Audio("/assets/audio/pop.mp3");
-            // audio.play();
             popConfetti(e);
-        }, 200);
+        }, 100);
         onUpdate({
             ...challenge,
             checked: !challenge.checked
         })
     }
+
+    const [mouseDownIndex, setMouseDownIndex] = useState<number | undefined>(undefined);
+
 
     return (
         <div style={{backgroundColor: 'white', width: '100vw'}}>
@@ -81,10 +80,14 @@ export const ChallengeListPage = () => {
             <CrudDialog
                 submitButtonRef={submitButtonRef}
                 element={selected}
-                onCancel={() => setSelected(undefined)}
+                onCancel={() => {
+                    setSelected(undefined);
+                    setMouseDownIndex(undefined)
+                }}
                 onDelete={async (e) => {
                     await onDelete(e)
                     setSelected(undefined);
+                    setMouseDownIndex(undefined)
                 }}
             >
                 <ChallengeForm
@@ -110,7 +113,7 @@ export const ChallengeListPage = () => {
                 />
                 <div style={{display: 'flex'}}>
                     <div style={{flex: 1}}>
-                        <FilterChips
+                        <ChallengeFilter
                             filter={filter}
                             setFilter={(e) => setFilter(e)}
                         />
@@ -132,18 +135,30 @@ export const ChallengeListPage = () => {
             <div style={{paddingLeft: 16, paddingRight: 16, paddingBottom: 64}}>
                 {filteredElements.map((challenge, index) => {
                     return (
-                        <Paper
+                        <div
                             key={`challenge-${index}`}
                             style={{
                                 marginBottom: 16,
                                 position: 'relative',
+                                transition: 'all 150ms cubic-bezier(0.694, 0.0482, 0.335, 1)',
+                                boxShadow: mouseDownIndex === index
+                                    ? '2px 2px 4px -1px rgb(152 162 179 / 15%), 0 2px 2px -1px rgb(152 162 179 / 30%)'
+                                    : '4px 4px 8px 3px rgb(152 162 179 / 15%), 0 2px 2px -1px rgb(152 162 179 / 30%)',
+                                overflow: 'hidden',
+                                borderRadius: 4,
                             }}>
+                            {challenge.level && activityLevelMap[challenge.level] &&
+                            <Banner
+                                size={24}
+                                color={activityLevelMap[challenge.level].color}
+                            />}
                             <div style={{display: 'flex', alignItems: 'center'}}>
-                                <div
-                                    onClick={() => {
-                                        // history.push(Routes.challenge.replace(':challengeId', challenge.id))
-                                        setSelected(challenge);
-                                    }}
+
+                                <GestureDetector
+                                    onMouseDown={() => setMouseDownIndex(index)}
+                                    onMouseUp={() => setMouseDownIndex(-1)}
+                                    onClick={() => history.push(Routes.challenge.replace(':challengeId', challenge.id))}
+                                    onLongClick={() => setSelected(challenge)}
                                     style={{
                                         flex: 1,
                                         display: 'flex',
@@ -152,17 +167,6 @@ export const ChallengeListPage = () => {
                                         padding: 16,
                                     }}
                                 >
-
-                                    {challenge.level && activityLevelMap[challenge.level] &&
-                                    <div style={{
-                                        position: 'absolute',
-                                        top: -20,
-                                        left: -20,
-                                        width: 40,
-                                        height: 40,
-                                        transform: 'rotate(45deg)',
-                                        backgroundColor: activityLevelMap[challenge.level].color,
-                                    }}/>}
                                     {challenge.activity && activityTypesMap[challenge.activity] &&
                                     <div style={{marginRight: 12}}>
                                         <img
@@ -174,25 +178,20 @@ export const ChallengeListPage = () => {
                                             }}
                                         />
                                     </div>}
-                                    <h3 style={{margin: 0, fontSize: 18, fontWeight: 600}}>
-                                        {challenge.name}
-                                    </h3>
-                                </div>
-                                {challenge.name.toLowerCase().includes('nofap') && <div
-                                    style={{paddingRight: 16}}
-                                    onClick={() => history.push(Routes.challenges30Day.replace(':challengeId', challenge.id))}
-                                >
-                                    <ExternalLinkLineIcon/>
-                                </div>
-                                }
+                                    <div>
+                                        <h3 style={{margin: 0, fontSize: 18, fontWeight: 600}}>
+                                            {challenge.name}
+                                        </h3>
+                                        <div style={{fontSize: 14, color: '#888'}}>
+                                            {subtitleFromChallenge(challenge)}
+                                        </div>
+                                    </div>
+                                </GestureDetector>
                                 <div style={{paddingRight: 16}} onClick={onCheckClick(challenge)}>
                                     <CheckIcon checked={challenge.checked}/>
                                 </div>
                             </div>
-                            {/*<div>*/}
-                            {/*    {challenge.description}*/}
-                            {/*</div>*/}
-                        </Paper>
+                        </div>
                     )
                 })}
             </div>
@@ -200,77 +199,78 @@ export const ChallengeListPage = () => {
     )
 }
 
-
-export const FilterChips: React.FC<{
-    filter: { [k: string]: boolean },
-    setFilter: (filter: { [k: string]: boolean }) => void
-}> = ({filter, setFilter}) => {
-
-
-    const [open, setOpen] = React.useState<boolean>(false);
+let mouseDown = 0;
+let mouseUp = 0;
+export const GestureDetector: React.FC<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
+    // onDouble: MouseEventHandler<HTMLDivElement>;
+    onLongClick?: MouseEventHandler<HTMLDivElement>;
+    delay?: number;
+}> = (
+    {
+        children,
+        delay = 500,
+        onClick,
+        // onDouble,
+        onLongClick,
+        onMouseDown,
+        onMouseUp,
+        ...props
+    }
+) => {
 
     return (
         <div
-            style={{
-                display: "flex",
-                alignItems: 'center',
-                cursor: 'pointer'
+            onMouseDown={(e) => {
+                onMouseDown?.(e)
+                mouseDown = new Date().getTime();
+                setTimeout((e) => {
+                    if (mouseUp < mouseDown) {
+                        onLongClick?.(e)
+                    }
+                }, delay)
             }}
+            onMouseUp={(e) => {
+                onMouseUp?.(e)
+                mouseUp = new Date().getTime();
+                onClick?.(e)
+            }}
+            {...props}
         >
-            {Object.keys(filter).map((key) => {
-                if (!filter[key]) return <div/>
-                return (
-                    <div style={{
-                        color: '#3758FA',
-                        fontSize: 14,
-                        fontWeight: 600,
-                        border: '1px #3758FA solid',
-                        borderRadius: 8,
-                        padding: '4px 8px',
-                    }}>
-                        {`${key}=${filter[key]}`}
-                    </div>
-                )
-            })}
-            <div
-                onClick={(e) => setOpen(true)}
-                style={{
-                    color: '#3758FA',
-                    fontSize: 14,
-                    fontWeight: 600,
-                    marginLeft: 6,
-                    border: '1px #3758FA solid',
-                    borderStyle: 'dashed',
-                    borderRadius: 8,
-                    padding: '4px 8px',
-                }}>
-                Add filter
-            </div>
-
-            <Dialog
-                open={open}
-                onClose={() => setOpen(false)}
-            >
-                <div style={{padding: '0px 16px'}}>
-                    {Object.keys(filter).map((e) => {
-                        return (
-                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                <div style={{flex: 1}}>
-                                    {e}
-                                </div>
-                                <Switch
-                                    checked={filter[e]}
-                                    onChange={() => setFilter({...filter, [e]: !filter[e]})}
-                                />
-                            </div>
-                        )
-                    })}
-                </div>
-            </Dialog>
+            {children}
         </div>
-
     )
-
 }
+
+export const subtitleFromChallenge = (e: Challenge): string => {
+    const activity = capitalize(e.activity?.replace('-', ' ') ?? '');
+    const level = capitalize(e.level?.replace('-', ' ') ?? '');
+    if (!e.activity && !e.level) {
+        return '';
+    }
+    if (e.activity && !e.level) {
+        return activity;
+    }
+    if (e.level && !e.activity) {
+        return level;
+    }
+    return `${activity} - ${level}`;
+}
+
+export const Banner: React.FC<{ size: number; color: string }> = ({size, color, children}) => {
+    return (
+        <div style={{
+            position: 'absolute',
+            top: -size,
+            left: -size,
+            width: size * 2,
+            height: size * 2,
+            transform: 'rotate(45deg)',
+            backgroundColor: color,
+        }}>
+            {children}
+        </div>
+    )
+}
+
 
 export default ChallengeListPage;

@@ -13,8 +13,8 @@ export const HomeSwitch = () => {
 
     return (
         <Switch>
-            <Route path={Routes.challenge} component={ChallengePage}/>
             <Route path={Routes.challenges30Day} component={Challenge30DayPage}/>
+            <Route path={Routes.challenge} component={ChallengePage}/>
 
             {navigationList.map(e => {
                 return (

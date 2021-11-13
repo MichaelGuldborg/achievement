@@ -28,9 +28,8 @@ export const ChallengeForm: React.FC<FormProps<Challenge>> = ({onSubmit, initial
                                 <Field
                                     as={TextField}
                                     name="name"
-                                    // label="Title"
                                     placeholder={'Title'}
-                                    inputProps={{style: {fontSize: 18, letterSpacing: 1.2}}}
+                                    inputProps={{style: {fontSize: 18}}}
                                     autoFocus
                                     fullWidth
                                     required
