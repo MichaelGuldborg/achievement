@@ -5,7 +5,7 @@ import CrudService from "../services/CrudService";
 
 export const useCrudQuery = <T extends Identifiable, >(id: string, service: CrudService<T>) => {
     const queryClient = useQueryClient();
-    const queryKey = service.path;
+    const queryKey = `${service.path}/${id}`;
 
     const query = useQuery<T | undefined>({
         queryKey: queryKey,

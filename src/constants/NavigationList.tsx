@@ -6,7 +6,7 @@ import ProfilePage from "../pages/ProfilePage";
 import HomeLineIcon from "remixicon-react/HomeLineIcon";
 import HomeLandingPage from "../pages/home_landing/HomeLandingPage";
 import ActivityPage from "../pages/activity/ActivityPage";
-import Challenge30DayPage from "../pages/activity/Challenge30DayPage";
+import Challenge30DayPage from "../pages/challenges/Challenge30DayPage";
 import LifeMapPage from "../pages/lifemap/LifeMapPage";
 import RoutinePage from "../pages/habits/RoutinePage";
 import AgendaPage from '../pages/AgendaPage';

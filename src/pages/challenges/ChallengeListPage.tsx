@@ -141,6 +141,10 @@ export const ChallengeListPage = () => {
                             }}>
                             <div style={{display: 'flex', alignItems: 'center'}}>
                                 <div
+                                    onClick={() => {
+                                        history.push(Routes.challenge.replace(':challengeId', challenge.id))
+                                        // setSelected(challenge);
+                                    }}
                                     style={{
                                         flex: 1,
                                         display: 'flex',
@@ -148,7 +152,6 @@ export const ChallengeListPage = () => {
                                         cursor: 'pointer',
                                         padding: 16,
                                     }}
-                                    onClick={() => setSelected(challenge)}
                                 >
 
                                     {challenge.level && activityLevelMap[challenge.level] &&
