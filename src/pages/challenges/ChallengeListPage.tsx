@@ -108,19 +108,28 @@ export const ChallengeListPage = () => {
                         })
                     }}/>}
                 />
-                <FilterChips filter={filter} setFilter={(e) => setFilter(e)}/>
+                <div style={{display: 'flex'}}>
+                    <div style={{flex: 1}}>
+                        <FilterChips
+                            filter={filter}
+                            setFilter={(e) => setFilter(e)}
+                        />
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        fontSize: 16,
+                        color: '#aaa',
+                        marginBottom: 12,
+                    }}>
+                        {`${filteredElements.filter(e => e.checked).length} / ${filteredElements.length}`}
+                    </div>
+
+                </div>
+
             </div>
             <div style={{paddingLeft: 16, paddingRight: 16, paddingBottom: 64}}>
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
-                    fontSize: 16,
-                    color: '#aaa',
-                    marginBottom: 12,
-                }}>
-                    {`${filteredElements.filter(e => e.checked).length} / ${filteredElements.length}`}
-                </div>
                 {filteredElements.map((challenge, index) => {
                     return (
                         <Paper
@@ -215,9 +224,7 @@ export const FilterChips: React.FC<{
                         color: '#3758FA',
                         fontSize: 14,
                         fontWeight: 600,
-                        marginLeft: 6,
                         border: '1px #3758FA solid',
-                        // borderStyle: 'dashed',
                         borderRadius: 8,
                         padding: '4px 8px',
                     }}>
