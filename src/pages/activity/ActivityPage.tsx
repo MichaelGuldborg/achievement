@@ -9,10 +9,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import CheckboxBlankCircleLineIcon from "remixicon-react/CheckboxBlankCircleLineIcon";
 import CheckboxCircleFillIcon from "remixicon-react/CheckboxCircleFillIcon";
 import theme from "../../constants/theme";
-import ExternalLinkLineIcon from "remixicon-react/ExternalLinkLineIcon";
-import IconButton from "@material-ui/core/IconButton";
-import history from "../../history";
-import Routes from "../../constants/Routes";
 
 
 export const ActivityPage = () => {
@@ -26,7 +22,6 @@ export const ActivityPage = () => {
         updatedActivity.levels[levelIndex].challenges[challengeIndex].checked = checked;
         setActivity(updatedActivity)
     }
-
 
 
     if (!activity) return <div/>
@@ -97,10 +92,6 @@ export const ActivityPage = () => {
                                     >
                                         <h3 style={{margin: 0}}>{e.name}</h3>
                                         <div>
-                                            {e.type && <IconButton onClick={() => history.push(Routes.challenges30Day)}>
-                                                <ExternalLinkLineIcon/>
-                                            </IconButton>
-                                            }
                                             <Checkbox
                                                 checked={e.checked}
                                                 onChange={(e, c) => updateChallengeComplete(levelIndex, challengeIndex, c)}

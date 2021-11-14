@@ -36,10 +36,13 @@ export interface Challenge {
     activity?: string;
     level?: string;
     name: string;
-    type?: '30-day'
     description?: string;
     checked?: boolean
     hidden?: boolean;
+
+    // 30 day challenge
+    start?: Date;
+    checkIndex?: number;
 }
 
 export const getMaxCompletedLevel = (a: Activity) => {

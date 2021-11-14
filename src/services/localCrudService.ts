@@ -34,13 +34,14 @@ export const localCrudService = <T extends Identifiable>(col: string): CrudServi
             const elements = getElements();
             return successResponse(elements);
         },
-        update: async (element) => {
+        update: async (request) => {
             const elements = getElements()
-            const index = elements.findIndex(e => e.id === element.id);
+            const index = elements.findIndex(e => e.id === request.id);
             if (index === -1) return errorResponse(404);
-            elements[index] = element;
+            elements[index] = {...elements[index], ...request};
             setElements(elements)
-            return successResponse(element);
+            const value = elements[index];
+            return successResponse(value);
         },
         delete: async (element) => {
             const id = typeof element === "string" ? element : element.id;

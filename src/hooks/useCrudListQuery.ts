@@ -2,6 +2,8 @@ import Identifiable from "../models/Identifyable";
 import {useQuery, useQueryClient} from "react-query";
 import CrudService from "../services/CrudService";
 import {createRef, useState} from "react";
+import {RestErrorResponse} from "../models/RestResponse";
+import snackbar from "../services/snackbar";
 
 
 export const useCrudListQuery = <T extends Identifiable, >(service: CrudService<T>) => {
@@ -21,10 +23,16 @@ export const useCrudListQuery = <T extends Identifiable, >(service: CrudService<
         cacheTime: Infinity,
     });
 
+    const showError = (response: RestErrorResponse) => {
+        return snackbar.showFeedback(response.feedback);
+    }
+
     const onCreate = async (value: T) => {
         await queryClient.cancelQueries(queryKey)
         const response = await service.create(value);
-        if (!response.success) return;
+        if (!response.success) {
+            return showError(response);
+        }
 
         // naively update query state
         value.id = response.value.id;
@@ -36,19 +44,22 @@ export const useCrudListQuery = <T extends Identifiable, >(service: CrudService<
         return {previous, next}
     }
 
+
     return {
         query: query,
         elements: query.data ?? [],
         selected,
         setSelected,
         submitButtonRef,
-        onCreate: onCreate,
+        onCreate,
         onUpdate: async (value: T) => {
             if (!value.id) return onCreate(value);
 
             await queryClient.cancelQueries(queryKey)
             const response = await service.update(value);
-            if (!response.success) return;
+            if (!response.success) {
+                return showError(response);
+            }
 
             // naively update query state
             const previous = queryClient.getQueryData(queryKey)
@@ -65,7 +76,9 @@ export const useCrudListQuery = <T extends Identifiable, >(service: CrudService<
             await queryClient.cancelQueries(queryKey)
 
             const response = await service.delete(value);
-            if (!response.success) return;
+            if (!response.success) {
+                return showError(response);
+            }
 
             // naively update query state
             queryClient.setQueryData(queryKey, (old: unknown) => {

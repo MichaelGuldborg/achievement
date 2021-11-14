@@ -9,33 +9,24 @@ import CheckLineIcon from "remixicon-react/CheckLineIcon";
 import {useParams} from "react-router-dom";
 import {useCrudQuery} from "../../hooks/useCrudQuery";
 import {firestoreCrudService} from "../../services/firestoreCrudService";
+import {Challenge} from "../../models/Activity";
 
-export interface Challenge30Day {
-    id: string;
-    name: string;
-    checkIndex: number;
-    start: Date;
-}
 
 export const Challenge30DayPage = () => {
 
     const {challengeId} = useParams<{ challengeId: string }>();
-    const {value, onSet} = useCrudQuery<Challenge30Day>(challengeId, firestoreCrudService('challenges-30-day'))
-    const challenge: Challenge30Day = value || {id: challengeId, name: '', checkIndex: 0, start: new Date()};
+    const {value, onUpdate} = useCrudQuery<Challenge>(challengeId, firestoreCrudService('challenges'))
+    const challenge: Challenge = value || {id: challengeId, name: ''};
+    const start = challenge.start || new Date()
+    const checkIndex = challenge.checkIndex || 0;
 
 
     const setStartDate = async (date: Date) => {
-        await onSet({
-            ...challenge,
-            start: date,
-        })
+        await onUpdate({id: challenge.id, start: date})
     }
 
     const setCheckIndex = async (index: number) => {
-        await onSet({
-            ...challenge,
-            checkIndex: index,
-        })
+        await onUpdate({id: challenge.id, checkIndex: index})
     }
 
     const [showDate, setShowDate] = useState<boolean>(false)
@@ -71,7 +62,7 @@ export const Challenge30DayPage = () => {
                             style={{padding: 8, paddingLeft: 12, paddingRight: 12}}
                             disabled={!showDate}
                         >
-                            {toLocalDateMothYearString(challenge.start)}
+                            {toLocalDateMothYearString(start)}
                         </Button>
                     </PopoverDatePicker>
                 </div>
@@ -94,8 +85,8 @@ export const Challenge30DayPage = () => {
                         >
                             {Array.from({length: width}).map((_, j) => {
                                 const index = i * width + j;
-                                const checked = challenge.checkIndex > index;
-                                const indexDate = addDays(challenge.start, index);
+                                const checked = checkIndex > index;
+                                const indexDate = addDays(start, index);
                                 return <div
                                     key={`30-challenge-col-${j}`}
                                     style={{
