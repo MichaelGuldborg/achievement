@@ -4,11 +4,12 @@ import {useCrudQuery} from "../../hooks/useCrudQuery";
 import {firestoreCrudService} from "../../services/firestoreCrudService";
 import {Challenge} from "../../models/Activity";
 import {CheckIcon} from "../AgendaPage";
-import {Banner, subtitleFromChallenge} from "./ChallengeListPage";
 import {activityLevelMap} from "../../data/activities";
 import {Button} from "@material-ui/core";
 import history from "../../history";
 import Routes from "../../constants/Routes";
+import Banner from "./Banner";
+import {subtitleFromChallenge} from "./ChallengeListPage";
 
 
 export const ChallengePage = () => {

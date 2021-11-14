@@ -40,6 +40,10 @@ export interface Challenge {
     checked?: boolean
     hidden?: boolean;
 
+    createdAt?: Date;
+    updatedAt?: Date;
+
+
     // 30 day challenge
     start?: Date;
     checkIndex?: number;

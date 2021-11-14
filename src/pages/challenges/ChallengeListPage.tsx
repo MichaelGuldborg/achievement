@@ -1,49 +1,22 @@
-import React, {CSSProperties, MouseEventHandler, useState} from "react";
+import React, {useState} from "react";
 import BasePageToolbar, {CreateButton} from "../../components/containers/BasePageToolbar";
 import {useCrudListQuery} from "../../hooks/useCrudListQuery";
 import {challenges} from "../../data/challenges";
 import {Challenge} from "../../models/Activity";
-import {CheckIcon} from "../AgendaPage";
 import CrudDialog from "../../components/dialogs/CrudDialog";
 import ChallengeForm from "./ChallengeForm";
 import {firestoreCrudService} from "../../services/firestoreCrudService";
-import {activityLevelMap, activityTypesMap} from "../../data/activities";
 import popConfetti from "../../lib/popConfetti";
 import ChallengeFilter from "./ChallengeFilter";
 import capitalize from "@material-ui/core/utils/capitalize";
-import QuestionMarkIcon from "remixicon-react/QuestionMarkIcon";
-import EditLineIcon from "remixicon-react/EditLineIcon";
-import Routes from "../../constants/Routes";
+import {ChallengeListItem} from "./ChallengeListItem";
 import history from "../../history";
-import PencilLineIcon from "remixicon-react/PencilLineIcon";
+import Routes from "../../constants/Routes";
+import {compareChallenges} from "./compareChallenges";
 
 export const ChallengeListPage = () => {
 
-    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', (a, b) => {
-        // sort non-checked first
-        if (a.checked && !b.checked) {
-            return 1;
-        }
-        if (b.checked && !a.checked) {
-            return -1;
-        }
-        // sort with level first
-        if (a.level && !b.level) {
-            return -1;
-        }
-        if (b.level && !a.level) {
-            return 1;
-        }
-        // sort by level index
-        if (a.level && b.level) {
-            const levelIndexA = activityLevelMap[a.level].index;
-            const levelIndexB = activityLevelMap[b.level].index;
-            if (levelIndexA > levelIndexB) return 1;
-            if (levelIndexA < levelIndexB) return -1;
-        }
-        // sort alphabetically by name
-        return a.name.localeCompare(b.name);
-    }));
+    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete,} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', compareChallenges));
 
     const [search, setSearch] = useState<string>('');
     const [filter, setFilter] = useState<{ [key: string]: any }>({
@@ -55,10 +28,11 @@ export const ChallengeListPage = () => {
     const filteredElements = elements.filter((e) => {
         if (!filter.showChecked && e.checked) return false;
         if (!filter.showHidden && e.hidden) return false;
-        if (search.trim().length !== 0) {
-            return e.name.includes(search)
-                || e.activity?.includes(search)
-                || e.level?.includes(search);
+        const searchLower = search.trim().toLowerCase();
+        if (searchLower.length !== 0) {
+            return e.name.toLowerCase().includes(searchLower)
+                || e.activity?.toLowerCase()?.includes(searchLower)
+                || e.level?.toLowerCase()?.includes(searchLower);
         }
         return true;
     })
@@ -133,115 +107,15 @@ export const ChallengeListPage = () => {
             <div style={{paddingLeft: 16, paddingRight: 16, paddingBottom: 64}}>
                 {filteredElements.map((challenge, index) => {
                     return (
-                        <div
-                            key={`challenge-${index}`}
-                            style={{
-                                marginBottom: 16,
-                                position: 'relative',
-                                transition: 'all 150ms cubic-bezier(0.694, 0.0482, 0.335, 1)',
-                                boxShadow: '4px 4px 8px 3px rgb(152 162 179 / 15%), 0 2px 2px -1px rgb(152 162 179 / 30%)',
-                                //     ? '2px 2px 4px -1px rgb(152 162 179 / 15%), 0 2px 2px -1px rgb(152 162 179 / 30%)'
-                                overflow: 'hidden',
-                                borderRadius: 4,
-                            }}>
-                            {challenge.level && activityLevelMap[challenge.level] &&
-                            <Banner
-                                position={'top-left'}
-                                color={activityLevelMap[challenge.level].color}
-                            />}
-                            <Banner
-                                position={'bottom-right'}
-                                style={{border: '1px #888 solid'}}
-                            />
-                            <div
-                                onClick={() => setSelected(challenge)}
-                                style={{position: 'absolute', bottom: 0, right: 0}}
-                            >
-                                <PencilLineIcon size={20} color={'#888'}/>
-                            </div>
-                            <div style={{display: 'flex', alignItems: 'center'}}>
-
-                                <div
-                                    onClick={(e) => {
-                                        history.push(Routes.challenge.replace(':challengeId', challenge.id));
-                                    }}
-                                    style={{
-                                        flex: 1,
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        cursor: 'pointer',
-                                        padding: 16,
-                                    }}
-                                >
-                                    {challenge.activity && activityTypesMap[challenge.activity] ?
-                                        <div style={{marginRight: 12}}>
-                                            <img
-                                                src={activityTypesMap[challenge.activity].icon}
-                                                alt={challenge.activity}
-                                                style={{width: 24, height: 24}}
-                                            />
-                                        </div> : <div style={{marginRight: 12}}>
-                                            <QuestionMarkIcon size={24}/>
-                                        </div>}
-                                    <div>
-                                        <h3 style={{margin: 0, fontSize: 18, fontWeight: 600}}>
-                                            {challenge.name}
-                                        </h3>
-                                        <div style={{fontSize: 14, color: '#888'}}>
-                                            {subtitleFromChallenge(challenge)}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style={{paddingRight: 16}} onClick={onCheckClick(challenge)}>
-                                    <CheckIcon checked={challenge.checked}/>
-                                </div>
-                            </div>
-                        </div>
+                        <ChallengeListItem
+                            challenge={challenge}
+                            index={index}
+                            onClick={() => history.push(Routes.challenge.replace(':challengeId', challenge.id))}
+                            onCheckClick={onCheckClick(challenge)}
+                        />
                     )
                 })}
             </div>
-        </div>
-    )
-}
-
-let mouseDown = 0;
-let mouseUp = 0;
-export const GestureDetector: React.FC<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
-    // onDouble: MouseEventHandler<HTMLDivElement>;
-    onLongClick?: MouseEventHandler<HTMLDivElement>;
-    delay?: number;
-}> = (
-    {
-        children,
-        delay = 500,
-        onClick,
-        // onDouble,
-        onLongClick,
-        onMouseDown,
-        onMouseUp,
-        ...props
-    }
-) => {
-
-    return (
-        <div
-            onMouseDown={(e) => {
-                onMouseDown?.(e)
-                mouseDown = new Date().getTime();
-                setTimeout((e) => {
-                    if (mouseUp < mouseDown) {
-                        onLongClick?.(e)
-                    }
-                }, delay)
-            }}
-            onMouseUp={(e) => {
-                onMouseUp?.(e)
-                mouseUp = new Date().getTime();
-                onClick?.(e)
-            }}
-            {...props}
-        >
-            {children}
         </div>
     )
 }
@@ -259,66 +133,6 @@ export const subtitleFromChallenge = (e: Challenge): string => {
         return level;
     }
     return `${activity} - ${level}`;
-}
-
-
-export const bannerStyle = (size: number, position: string) => {
-    if (position === 'top-left') {
-        return {}
-    }
-
-}
-
-export const Banner: React.FC<{
-    size?: number;
-    color?: string,
-    position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
-    style?: CSSProperties,
-}> = (
-    {
-        size = 24,
-        color,
-        position,
-        style,
-        children
-    }
-) => {
-    if (position === 'top-left') {
-        return (
-            <div
-                style={{
-                    position: 'absolute',
-                    top: -size,
-                    left: -size,
-                    width: size * 2,
-                    height: size * 2,
-                    transform: 'rotate(45deg)',
-                    backgroundColor: color,
-                    ...style
-                }}>
-                {children}
-            </div>
-        )
-    }
-    if (position === 'bottom-right') {
-        return (
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: -size,
-                    right: -size,
-                    width: size * 2,
-                    height: size * 2,
-                    transform: 'rotate(45deg)',
-                    backgroundColor: color,
-                    ...style
-                }}>
-                {children}
-            </div>
-        )
-    }
-
-    return <div/>
 }
 
 

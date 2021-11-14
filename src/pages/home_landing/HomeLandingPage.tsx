@@ -1,18 +1,10 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import {Grid} from "@material-ui/core";
-import Routes from "../../constants/Routes";
-import history from "../../history";
-import {useAllActivities} from "../../hooks/useActivity";
-import Activity from "../../models/Activity";
-import LifeMap from "../lifemap/LifeMapGrid";
-import lifeMaps from "../../data/lifeMaps";
-import ExternalLinkLineIcon from "remixicon-react/ExternalLinkLineIcon";
-import IconButton from "@material-ui/core/IconButton";
-import ActivityCard from "./ActivityCard";
-import LifeBalanceGrid from "../LifeBalanceGrid";
-import Colors from "../../constants/Colors";
+import {Challenge} from "../../models/Activity";
 import bg from "../community/pexels-julia-volk-6062504.jpg";
+import {useCrudListQuery} from "../../hooks/useCrudListQuery";
+import {firestoreCrudService} from "../../services/firestoreCrudService";
+import {ChallengeListItem} from "../challenges/ChallengeListItem";
 
 
 // TODO
@@ -37,6 +29,19 @@ import bg from "../community/pexels-julia-volk-6062504.jpg";
 
 export const HomeLandingPage = () => {
 
+    const {elements} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', (a, b) => {
+        if(a.updatedAt === undefined && b.updatedAt === undefined) return 0;
+        if(a.updatedAt === undefined) return 1;
+        if(b.updatedAt === undefined) return -1;
+
+        if(a.updatedAt > b.updatedAt){
+            return -1;
+        }
+        if(b.updatedAt > a.updatedAt){
+            return 1;
+        }
+        return 0;
+    }));
 
     return (
         <div style={{
@@ -67,6 +72,17 @@ export const HomeLandingPage = () => {
                     Start building your life
                 </div>
 
+            </div>
+
+            <div style={{padding: 16}}>
+                {elements.slice(0, 3).map((challenge, index) => {
+                    return (
+                        <ChallengeListItem
+                            challenge={challenge}
+                            index={index}
+                        />
+                    )
+                })}
             </div>
 
         </div>
