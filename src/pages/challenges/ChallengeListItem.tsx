@@ -4,10 +4,10 @@ import PencilLineIcon from "remixicon-react/PencilLineIcon";
 import history from "../../history";
 import Routes from "../../constants/Routes";
 import QuestionMarkIcon from "remixicon-react/QuestionMarkIcon";
-import {CheckIcon} from "../AgendaPage";
 import React, {MouseEventHandler} from "react";
 import {subtitleFromChallenge} from "./ChallengeListPage";
 import {Challenge} from "../../models/Activity";
+import CheckIcon from "./CheckIcon";
 
 export const ChallengeListItem: React.FC<{
     challenge: Challenge;

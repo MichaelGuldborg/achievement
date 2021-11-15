@@ -7,8 +7,8 @@ import React from "react";
 import FormProps from "../../models/FormProps";
 import {Challenge} from "../../models/Activity";
 import capitalize from "@material-ui/core/utils/capitalize";
-import {CheckIcon} from "../AgendaPage";
 import {activityTypes} from "../../data/activities";
+import CheckIcon from "./CheckIcon";
 
 
 export const ChallengeForm: React.FC<FormProps<Challenge>> = ({onSubmit, initial, submitButtonRef}) => {

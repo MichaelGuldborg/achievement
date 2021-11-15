@@ -12,11 +12,35 @@ import capitalize from "@material-ui/core/utils/capitalize";
 import {ChallengeListItem} from "./ChallengeListItem";
 import history from "../../history";
 import Routes from "../../constants/Routes";
-import {compareChallenges} from "./compareChallenges";
+import {activityLevelMap} from "../../data/activities";
 
 export const ChallengeListPage = () => {
 
-    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete,} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', compareChallenges));
+    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete,} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', (a: Challenge, b: Challenge) => {
+        // sort non-checked first
+        if (a.checked && !b.checked) {
+            return 1;
+        }
+        if (b.checked && !a.checked) {
+            return -1;
+        }
+        // sort with level first
+        if (a.level && !b.level) {
+            return -1;
+        }
+        if (b.level && !a.level) {
+            return 1;
+        }
+        // sort by level index
+        if (a.level && b.level) {
+            const levelIndexA = activityLevelMap[a.level].index;
+            const levelIndexB = activityLevelMap[b.level].index;
+            if (levelIndexA > levelIndexB) return 1;
+            if (levelIndexA < levelIndexB) return -1;
+        }
+        // sort alphabetically by name
+        return a.name.localeCompare(b.name);
+    }));
 
     const [search, setSearch] = useState<string>('');
     const [filter, setFilter] = useState<{ [key: string]: any }>({

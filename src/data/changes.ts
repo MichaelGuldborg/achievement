@@ -8,7 +8,6 @@ export const changes = [{
     id: 'who5',
     text: 'Oplever forbedret trivsel og øget selvværd',
     icon: OpenArmLineIcon,
-    // color: 'green',
 }, {
     id: 'ucla3',
     text: 'Oplever formindsket stress i dagligdagen',

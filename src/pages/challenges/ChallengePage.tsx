@@ -3,13 +3,13 @@ import {useParams} from "react-router-dom";
 import {useCrudQuery} from "../../hooks/useCrudQuery";
 import {firestoreCrudService} from "../../services/firestoreCrudService";
 import {Challenge} from "../../models/Activity";
-import {CheckIcon} from "../AgendaPage";
 import {activityLevelMap} from "../../data/activities";
 import {Button} from "@material-ui/core";
 import history from "../../history";
 import Routes from "../../constants/Routes";
 import Banner from "./Banner";
 import {subtitleFromChallenge} from "./ChallengeListPage";
+import CheckIcon from "./CheckIcon";
 
 
 export const ChallengePage = () => {

@@ -121,7 +121,7 @@ export const Challenge30DayPage = () => {
                                         }}>
                                         {checked ? <CheckLineIcon
                                             style={{width: 20}}
-                                            color={'green'}
+                                            color={'#00B276'}
                                         /> : <span>{showDate ? `${indexDate.getDate()}` : index + 1}</span>}
                                     </div>
                                 </div>

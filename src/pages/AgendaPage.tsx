@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {InputBase} from "@material-ui/core";
 import {randomId} from "../lib/math/randomId";
-import CheckLineIcon from "remixicon-react/CheckLineIcon";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
+import CheckIcon from "./challenges/CheckIcon";
 
 
 export interface CheckList {
@@ -389,30 +389,5 @@ export const AgendaPage: React.FC = () => {
     )
 }
 
-
-
-
-export const CheckIcon: React.FC<{ checked?: boolean; onClick?: VoidFunction }> = ({onClick, checked}) => {
-    return (
-        <div
-            onClick={onClick}
-            style={{
-                width: 20,
-                height: 20,
-                marginRight: 8,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                border: checked ? '1px #ccc solid' : '1px #aaa solid',
-                borderRadius: 4,
-                cursor: 'pointer',
-            }}>
-            {checked ? <CheckLineIcon
-                style={{width: 20}}
-                color={'green'}
-            /> : <span/>}
-        </div>
-    )
-}
 
 export default AgendaPage;
