@@ -44,7 +44,7 @@ const BasePageToolbar: React.FC<ToolbarProps> = ({search, onSearch, action}) => 
 export const CreateButton: React.FC<{ text: string; onClick: VoidFunction }> = ({text, onClick}) => {
     return (
         <>
-            <Hidden mdDown>
+            <Hidden smDown>
                 <Button
                     onClick={onClick}
                     color='secondary'
@@ -64,7 +64,7 @@ export const CreateButton: React.FC<{ text: string; onClick: VoidFunction }> = (
                     {text}
                 </Button>
             </Hidden>
-            <Hidden smUp>
+            <Hidden mdUp>
                 <div style={{
                     position: 'fixed',
                     bottom: 16,

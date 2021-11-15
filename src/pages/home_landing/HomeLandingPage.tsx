@@ -30,14 +30,14 @@ import {ChallengeListItem} from "../challenges/ChallengeListItem";
 export const HomeLandingPage = () => {
 
     const {elements} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', (a, b) => {
-        if(a.updatedAt === undefined && b.updatedAt === undefined) return 0;
-        if(a.updatedAt === undefined) return 1;
-        if(b.updatedAt === undefined) return -1;
+        if (a.updatedAt === undefined && b.updatedAt === undefined) return 0;
+        if (a.updatedAt === undefined) return 1;
+        if (b.updatedAt === undefined) return -1;
 
-        if(a.updatedAt > b.updatedAt){
+        if (a.updatedAt > b.updatedAt) {
             return -1;
         }
-        if(b.updatedAt > a.updatedAt){
+        if (b.updatedAt > a.updatedAt) {
             return 1;
         }
         return 0;
@@ -75,6 +75,14 @@ export const HomeLandingPage = () => {
             </div>
 
             <div style={{padding: 16}}>
+                <h2 style={{
+                    margin: 0,
+                    marginBottom: 16,
+                    fontSize: 18,
+                    fontWeight: 600,
+                }}>
+                    Recent challenges
+                </h2>
                 {elements.slice(0, 3).map((challenge, index) => {
                     return (
                         <ChallengeListItem

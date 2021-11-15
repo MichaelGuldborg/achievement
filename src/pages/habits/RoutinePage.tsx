@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {dayNames} from "../../lib/date/toLocalISO";
-import {Container, Fab, Grid} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import balances from "../../data/balances";
@@ -8,13 +8,19 @@ import CrudDialog from "../../components/dialogs/CrudDialog";
 import HabitForm from "./HabitForm";
 import useSubmitButtonRef from "../../hooks/useSubmitButtonRef";
 import {useCrudListQuery} from "../../hooks/useCrudListQuery";
-import AddLineIcon from "remixicon-react/AddLineIcon";
 import Habit, {defaultHabit} from "../../models/Habit";
 import {useCurrentUser} from "../../hooks/useCurrentUser";
 import IconButton from "@material-ui/core/IconButton";
 import VisibilityIcon from 'remixicon-react/Eye2LineIcon';
 import VisibilityOffIcon from 'remixicon-react/EyeCloseLineIcon';
 import {firestoreCrudService} from "../../services/firestoreCrudService";
+import Hidden from "@material-ui/core/Hidden";
+import Button from "@material-ui/core/Button";
+import {ArrowLeftIcon} from "@material-ui/pickers/_shared/icons/ArrowLeftIcon";
+import {ArrowRightIcon} from "@material-ui/pickers/_shared/icons/ArrowRightIcon";
+import MobileStepper from "@material-ui/core/MobileStepper";
+import capitalize from "@material-ui/core/utils/capitalize";
+import {CreateButton} from "../../components/containers/BasePageToolbar";
 
 
 export const currentUserCollection = (col?: string) => {
@@ -59,16 +65,17 @@ export const RoutinePage: React.FC = () => {
 
         return (
             <div
-                style={{marginRight: 32, cursor: 'pointer'}}
+                style={{marginRight: 0, cursor: 'pointer'}}
                 onClick={() => setEditElement(habit)}
             >
                 <div style={{
-                    width: '100%',
+                    width: 'calc(100% - 24px)',
                     height: height,
                     display: 'flex',
                     position: 'relative',
                     flexDirection: 'column',
-                    margin: '0px 6px 12px 6px',
+                    marginBottom: 8,
+                    // margin: '0px 0px 12px 6px',
                     padding: 10,
                     paddingRight: 4,
                     backgroundColor: balance?.color ?? '#A79B8E',
@@ -105,19 +112,14 @@ export const RoutinePage: React.FC = () => {
     }
 
 
+    const [dayIndex, setDayIndex] = useState(nowDayOfWeek);
+
     return (
         <div style={{width: '100vw'}}>
             <div style={{height: 56, backgroundColor: '#F7F7F7'}}/>
 
-            <Container>
+            <div style={{padding: 16}}>
 
-                <div style={{position: 'fixed', bottom: 32, right: 32, zIndex: 1000}}>
-                    <Fab color="primary" aria-label="add" onClick={() => {
-                        setEditElement({...defaultHabit});
-                    }}>
-                        <AddLineIcon/>
-                    </Fab>
-                </div>
 
                 <CrudDialog
                     submitButtonRef={submitButtonRef}
@@ -133,51 +135,92 @@ export const RoutinePage: React.FC = () => {
                 </CrudDialog>
 
                 <Grid container spacing={2}>
-                    <Grid item xl={12} lg={12} xs={12}>
-                        <Paper style={{padding: 16}}>
-                            <IconButton onClick={() => setShowDuration(!showDuration)}>
-                                {showDuration ? <VisibilityIcon/> : <VisibilityOffIcon/>}
-                            </IconButton>
-                            <div style={{display: 'flex'}}>
-                                {Array(7).fill(0).map((e, index) => {
-                                    return <div style={{flex: 1, fontWeight: 600}}>
-                                        <div style={{marginRight: 32, textAlign: 'center'}}>
-                                            {dayNames[index]}
-                                        </div>
+                    <Grid item xs={12}>
+                        <Paper>
+                            <div style={{padding: '8px 16px', display: 'flex', alignItems: 'center'}}>
+                                <Hidden mdUp>
+                                    <div style={{fontSize: 18, fontWeight: 600}}>
+                                        {capitalize(dayNames[dayIndex])}
                                     </div>
-                                })}
+                                </Hidden>
+                                <div style={{flex: 1}}/>
+                                <IconButton onClick={() => setShowDuration(!showDuration)}>
+                                    {showDuration ? <VisibilityIcon/> : <VisibilityOffIcon/>}
+                                </IconButton>
+                                <CreateButton
+                                    text={'Add item'}
+                                    onClick={() => setEditElement({...defaultHabit})}
+                                />
                             </div>
-                            <Divider style={{marginTop: 16, marginBottom: 16}}/>
-                            <div style={{display: 'flex'}}>
-                                {Array(7).fill(0).map((e, index) => {
-                                    const habitsThisDay = elements.filter(h => {
-                                        if (h.isMonthly || h.isYearly) return false;
-                                        return h.dayOfWeek === dayNames[index].toLowerCase();
-                                    })
 
-                                    const minStartTimeDuration = getDuration(minStartTime, habitsThisDay[0]?.startTime)
 
-                                    return (
-                                        <div
-                                            style={{
-                                                flex: 1,
-                                                backgroundColor: index === nowDayOfWeek ? '#eee' : undefined,
-                                                borderRadius: 4
-                                            }}>
-                                            <div style={{height: 6}}/>
-                                            {showDuration && <div style={{height: minStartTimeDuration}}/>}
-                                            {habitsThisDay.map(renderHabit)}
+                            <Hidden smDown>
+                                <div style={{display: 'flex'}}>
+                                    {Array(7).fill(0).map((e, index) => {
+                                        return <div style={{flex: 1, fontWeight: 600}}>
+                                            <div style={{marginRight: 32, textAlign: 'center'}}>
+                                                {dayNames[index]}
+                                            </div>
                                         </div>
-                                    )
-                                })}
-                            </div>
+                                    })}
+                                </div>
+                                <Divider style={{marginTop: 16, marginBottom: 16}}/>
+                                <div style={{display: 'flex'}}>
+                                    {Array(7).fill(0).map((e, index) => {
+                                        const habitsThisDay = elements.filter(h => {
+                                            if (h.isMonthly || h.isYearly) return false;
+                                            return h.dayOfWeek === dayNames[index].toLowerCase();
+                                        })
+
+                                        const minStartTimeDuration = getDuration(minStartTime, habitsThisDay[0]?.startTime)
+
+                                        return (
+                                            <div style={{flex: 1,}}>
+                                                <div style={{height: 6}}/>
+                                                {showDuration && <div style={{height: minStartTimeDuration}}/>}
+                                                {habitsThisDay.map(renderHabit)}
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </Hidden>
+                            <Hidden mdUp>
+
+                                <div style={{padding: '0px 16px'}}>
+                                    {elements.filter(h => {
+                                        if (h.isMonthly || h.isYearly) return false;
+                                        return h.dayOfWeek === dayNames[dayIndex].toLowerCase();
+                                    }).map(renderHabit)}
+                                </div>
+
+                                <MobileStepper
+                                    variant="dots"
+                                    steps={7}
+                                    position="static"
+                                    activeStep={dayIndex}
+                                    style={{flexGrow: 1}}
+                                    backButton={<Button
+                                        onClick={() => setDayIndex((dayIndex + 6) % 7)}
+                                        size="small"
+                                    >
+                                        <ArrowLeftIcon/> Back
+                                    </Button>}
+                                    nextButton={<Button
+                                        onClick={() => setDayIndex((dayIndex + 1) % 7)}
+                                        size="small"
+                                    >
+                                        Next <ArrowRightIcon/>
+                                    </Button>}
+                                />
+                            </Hidden>
+
                         </Paper>
                     </Grid>
                     {['Daily', 'Monthly', 'Yearly'].map((e, index) => {
                         return (
                             <Grid item xl={4} lg={4} xs={12}>
-                                <Paper style={{padding: 16}}>
-                                    <div style={{fontWeight: 600, marginBottom: 32}}>
+                                <Paper style={{padding: '16px 16px'}}>
+                                    <div style={{fontSize: 18, fontWeight: 600, marginBottom: 16}}>
                                         {e}
                                     </div>
                                     <div>
@@ -193,7 +236,7 @@ export const RoutinePage: React.FC = () => {
                         )
                     })}
                 </Grid>
-            </Container>
+            </div>
         </div>
 
     )
