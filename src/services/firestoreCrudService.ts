@@ -3,19 +3,30 @@ import {addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc} 
 import {db} from "./firebase";
 import CrudService from "./CrudService";
 
+
+function keysOf<T>(keyRecord: Record<keyof T, any>): (keyof T)[] {
+    return Object.keys(keyRecord) as any
+}
+
 export const firestoreCrudService = <T extends {
     id: string;
     createdAt?: Date;
     updatedAt?: Date;
 }>(col: string, compare?: (a: T, b: T) => number): CrudService<T> => {
 
-
     return {
         path: col,
         read: async function (id) {
             const snapshot = await getDoc(doc(db, col, id));
-            const e = snapshot.data() as T;
-            return successResponse(e);
+            const data = snapshot.data() as T;
+            keysOf<T>(data).forEach((key) => {
+                const field = data[key] as any;
+                if (typeof field?.toDate === 'function') {
+                    data[key] = field?.toDate();
+                }
+            })
+
+            return successResponse(data);
         },
         set: async function (e) {
             e.updatedAt = new Date();

@@ -1,3 +1,6 @@
+import firebase from "firebase/compat";
+import FirestoreDataConverter = firebase.firestore.FirestoreDataConverter;
+
 export interface Activity {
     id: string;
     name: string;

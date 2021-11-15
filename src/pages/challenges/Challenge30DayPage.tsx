@@ -20,7 +20,6 @@ export const Challenge30DayPage = () => {
     const start = challenge.start || new Date()
     const checkIndex = challenge.checkIndex || 0;
 
-
     const setStartDate = async (date: Date) => {
         await onUpdate({id: challenge.id, start: date})
     }
