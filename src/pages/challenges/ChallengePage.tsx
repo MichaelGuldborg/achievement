@@ -10,6 +10,7 @@ import Routes from "../../constants/Routes";
 import Banner from "./Banner";
 import {subtitleFromChallenge} from "./ChallengeListPage";
 import CheckIcon from "./CheckIcon";
+import theme from "../../constants/theme";
 
 
 export const ChallengePage = () => {
@@ -52,7 +53,7 @@ export const ChallengePage = () => {
                         }}>
                             {value.name}
                         </div>
-                        <div style={{fontSize: 16, color: '#888'}}>
+                        <div style={{fontSize: 16, color: theme.colors.textGrey}}>
                             {subtitleFromChallenge(value)}
                         </div>
                     </div>

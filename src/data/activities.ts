@@ -14,13 +14,13 @@ import SkateboardIcon from "../assets/icons/skateboard.png"
 import ExtremeSportIcon from "../assets/icons/skydiving.png"
 import RunningIcon from "../assets/icons/running.png"
 import {toIdValueMap} from "../lib/map/toIdValueMap";
-import Colors from "../constants/Colors";
+import theme from "../constants/theme";
 
 
 export const activityTypes = [{
     id: 'running',
     icon: RunningIcon,
-},{
+}, {
     id: 'climbing',
     icon: ClimbingIcon,
 }, {
@@ -54,19 +54,19 @@ export const activityTypes = [{
 
 export const activityLevels = [{
     id: 'beginner',
-    color: Colors.green,
+    color: theme.colors.green,
     index: 0,
 }, {
     id: 'intermediate',
-    color: Colors.yellow,
+    color: theme.colors.yellow,
     index: 1,
 }, {
     id: 'experienced',
-    color: Colors.orange,
+    color: theme.colors.orange,
     index: 2,
 }, {
     id: 'expert',
-    color: Colors.red,
+    color: theme.colors.red,
     index: 3,
 }]
 

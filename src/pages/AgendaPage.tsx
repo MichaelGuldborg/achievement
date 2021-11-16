@@ -3,6 +3,7 @@ import {InputBase} from "@material-ui/core";
 import {randomId} from "../lib/math/randomId";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import CheckIcon from "./challenges/CheckIcon";
+import theme from "../constants/theme";
 
 
 export interface CheckList {
@@ -192,7 +193,7 @@ export const AgendaPage: React.FC = () => {
                             padding: 0,
                             fontSize: 16,
                             fontWeight: 400,
-                            color: item.checked ? '#888' : '#000',
+                            color: item.checked ? theme.colors.textGrey : theme.colors.black,
                             textDecoration: item.checked ? 'line-through' : undefined,
                         }}
                         inputProps={{

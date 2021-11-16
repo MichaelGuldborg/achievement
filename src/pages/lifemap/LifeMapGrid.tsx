@@ -1,37 +1,16 @@
 import React, {useState} from "react";
 import {LifeMapEntry} from "./LifeMapPage";
 import {Popover} from "@material-ui/core";
-import theme from "../../constants/theme";
 import ArrowRightLineIcon from "remixicon-react/ArrowRightLineIcon";
 import ArrowDownLineIcon from "remixicon-react/ArrowDownLineIcon";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import theme from "../../constants/theme";
 
 
+const now = new Date();
 const weekMillis = 604800000;
-const blockSize = 16;
-const rows = 90;
-const columns = 52;
-
-const useStyles = makeStyles((theme) => ({
-    block: {
-        width: blockSize,
-        height: blockSize,
-        borderRadius: 1,
-        boxSizing: 'border-box',
-        // backgroundColor: color ?? '#e0e0e0',
-        // opacity: isPast ? 0.4 : 1,
-        // border: index === popover.index ? '2px solid black' : undefined,
-        // boxShadow: '0 4px 6px ' + fade(theme.palette.primary.main, 0.25),
-        // transition: theme.transitions.create(['background-color', 'box-shadow']),
-        "&:hover": {
-            // cursor: 'pointer',
-            border: '2px solid black',
-            // background: fade(theme.palette.grey.A400, 1),
-            // boxShadow: '0px 0px 8px ' + fade(theme.palette.grey.A400, 0.3),
-        }
-    }
-
-}))
+export const toWeeks = (date?: Date) => {
+    return Math.floor((now.getTime() - (date?.getTime() ?? 0)) / weekMillis);
+}
 
 export const LifeMapGrid: React.FC<{
     entries: LifeMapEntry[];
@@ -45,18 +24,13 @@ export const LifeMapGrid: React.FC<{
     {
         entries,
         onClick,
-        skip,
-        take,
         birthDate,
         selectedWeek,
         hoverColor,
     }
 ) => {
-    const classes = useStyles();
-    const now = new Date();
 
-
-    const birthDateWeeks = Math.floor((now.getTime() - (birthDate?.getTime() ?? 0)) / weekMillis);
+    const birthDateWeeks = toWeeks(birthDate);
     // const weekColors = entries.map((e) => Array(e.weeks).fill(e.color)).flat()
     const weekColors = entries.reduce((result, e) => {
         Array(e.end - e.start).fill(undefined).forEach((_, i) => {
@@ -85,8 +59,19 @@ export const LifeMapGrid: React.FC<{
     }
     const popoverEntry = entries.find(e => e.color === weekColors[popover.index ?? 0]);
 
+
+    const isWindowSmall = window.screen.width < 900;
+    const isWindowMedium = window.screen.width >= 900 && window.screen.width < 1600;
+    const isWindowLarge = window.screen.width >= 1600;
+    const size = 22;
+    const spacing = 4;
+    const [rows, cols] = isWindowSmall ? [360, 13] : isWindowMedium ? [180, 26] : [90, 52];
+    const skip = Math.floor(birthDateWeeks / cols)
+    const take = 0; // always take all
+
+
     return (
-        <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
             <div>
                 <Popover
@@ -111,7 +96,7 @@ export const LifeMapGrid: React.FC<{
                 </Popover>
 
                 <div style={{
-                    color: theme.palette.grey["500"],
+                    color: theme.colors.textGrey,
                     fontSize: 18,
                 }}>
                     <div style={{display: 'flex', alignItems: 'center'}}>
@@ -119,29 +104,29 @@ export const LifeMapGrid: React.FC<{
                         <span style={{marginLeft: 8}}>Number of years</span>
                         <div style={{width: 16}}/>
                         <ArrowRightLineIcon/>
-                        <span style={{marginLeft: 8}}>Week of the year</span>
+                        <span style={{marginLeft: 8}}>Number of weeks</span>
                     </div>
                 </div>
 
                 <div>
                     <div style={{
                         display: 'inline-block',
-                        width: blockSize,
-                        height: blockSize,
-                        marginRight: 2,
+                        width: size,
+                        height: size,
+                        padding: spacing,
+                        // marginRight: 2,
                         textAlign: 'end',
                     }}/>
-                    {Array.from({length: columns}).map((_, i) => {
+                    {Array.from({length: cols}).map((_, i) => {
                         return <div style={{
                             display: 'inline-block',
-                            width: blockSize,
-                            height: blockSize,
-                            marginLeft: 4,
-                            marginRight: 4,
-                            marginBottom: 8,
+                            width: size,
+                            height: size,
+                            padding: spacing,
                             textAlign: 'center',
                             fontSize: 16,
                             fontWeight: 600,
+                            color: theme.colors.textGrey,
                         }}>
                             {i % 10 === 0 ? i : ''}
                         </div>
@@ -155,18 +140,23 @@ export const LifeMapGrid: React.FC<{
                         <div style={{
                             display: 'inline-block',
                             overflow: 'hidden',
-                            width: blockSize,
-                            height: blockSize,
-                            lineHeight: blockSize - 2 + 'px',
+                            width: size,
+                            height: size,
+                            lineHeight: size - 2 + 'px',
                             textAlign: 'end',
                             paddingRight: 8,
+                            marginTop: 4,
+                            // marginRight: 8,
                             fontSize: 16,
                             fontWeight: 600,
+                            color: theme.colors.textGrey,
                         }}>
-                            {i % 5 === 0 ? i : ''}
+                            {isWindowSmall && i % 4 === 0 ? Math.floor(i / 4) : ''}
+                            {isWindowMedium && i % 4 === 0 ? Math.floor(i / 2) : ''}
+                            {isWindowLarge && i % 5 === 0 ? i : ''}
                         </div>
-                        {Array.from({length: columns}).map((_, j) => {
-                            const index = i * columns + j
+                        {Array.from({length: cols}).map((_, j) => {
+                            const index = i * cols + j
                             const isPast = birthDateWeeks - index > 0;
                             let color = weekColors[index] ?? '#e0e0e0';
 
@@ -183,7 +173,7 @@ export const LifeMapGrid: React.FC<{
                             return <div
                                 style={{
                                     display: 'inline-block',
-                                    padding: 4,
+                                    padding: spacing,
                                     cursor: onClick ? 'pointer' : undefined
                                 }}
                                 onMouseLeave={handlePopoverClose}
@@ -192,15 +182,23 @@ export const LifeMapGrid: React.FC<{
                                 }}
                             >
                                 <div
-                                    className={classes.block}
                                     onClick={() => onClick?.(index)}
                                     style={{
+                                        width: size,
+                                        height: size,
+                                        borderRadius: 1,
+                                        boxSizing: 'border-box',
                                         backgroundColor: color,
                                         opacity: isPast ? 0.4 : 1,
                                     }}
                                 />
                             </div>
                         })}
+                        <div style={{
+                            width: size,
+                            height: size,
+                            padding: spacing,
+                        }}/>
                     </div>
                 })}
             </div>

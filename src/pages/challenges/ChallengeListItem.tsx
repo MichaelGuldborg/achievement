@@ -8,6 +8,7 @@ import React, {MouseEventHandler} from "react";
 import {subtitleFromChallenge} from "./ChallengeListPage";
 import {Challenge} from "../../models/Activity";
 import CheckIcon from "./CheckIcon";
+import theme from "../../constants/theme";
 
 export const ChallengeListItem: React.FC<{
     challenge: Challenge;
@@ -47,7 +48,7 @@ export const ChallengeListItem: React.FC<{
                 onClick={onClick}
                 style={{position: 'absolute', bottom: 0, right: 0}}
             >
-                <PencilLineIcon size={20} color={'#888'}/>
+                <PencilLineIcon size={20} color={theme.colors.textGrey}/>
             </div>
             <div style={{display: 'flex', alignItems: 'center'}}>
 
@@ -77,7 +78,7 @@ export const ChallengeListItem: React.FC<{
                         <h3 style={{margin: 0, fontSize: 18, fontWeight: 600}}>
                             {challenge.name}
                         </h3>
-                        <div style={{fontSize: 14, color: '#888'}}>
+                        <div style={{fontSize: 14, color: theme.colors.textGrey}}>
                             {subtitleFromChallenge(challenge)}
                         </div>
                     </div>
