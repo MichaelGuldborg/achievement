@@ -63,7 +63,7 @@ export const LifeMapGrid: React.FC<{
     const isWindowSmall = window.screen.width < 900;
     const isWindowMedium = window.screen.width >= 900 && window.screen.width < 1600;
     const isWindowLarge = window.screen.width >= 1600;
-    const size = 22;
+    const size = 18;
     const spacing = 4;
     const [rows, cols] = isWindowSmall ? [360, 13] : isWindowMedium ? [180, 26] : [90, 52];
     const skip = Math.floor(birthDateWeeks / cols)
@@ -144,9 +144,8 @@ export const LifeMapGrid: React.FC<{
                             height: size,
                             lineHeight: size - 2 + 'px',
                             textAlign: 'end',
-                            paddingRight: 8,
+                            paddingRight: 4,
                             marginTop: 4,
-                            // marginRight: 8,
                             fontSize: 16,
                             fontWeight: 600,
                             color: theme.colors.textGrey,
@@ -194,11 +193,11 @@ export const LifeMapGrid: React.FC<{
                                 />
                             </div>
                         })}
-                        <div style={{
+                        {!isWindowSmall && <div style={{
                             width: size,
                             height: size,
                             padding: spacing,
-                        }}/>
+                        }}/>}
                     </div>
                 })}
             </div>
