@@ -52,6 +52,15 @@ export const useCrudListQuery = <T extends Identifiable, >(service: CrudService<
         setSelected,
         submitButtonRef,
         onCreate,
+        onSet: async (value: T) => {
+            if (!service.set) return;
+
+            await queryClient.cancelQueries(queryKey)
+            const response = await service.set(value);
+            if (!response.success) {
+                return showError(response)
+            }
+        },
         onUpdate: async (value: T) => {
             if (!value.id) return onCreate(value);
 

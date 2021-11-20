@@ -7,15 +7,14 @@ import {toLocalDateMothYearString} from "../../lib/date/toLocalISO";
 import {addDays} from "date-fns";
 import CheckLineIcon from "remixicon-react/CheckLineIcon";
 import {useParams} from "react-router-dom";
-import {useCrudQuery} from "../../hooks/useCrudQuery";
-import {firestoreCrudService} from "../../services/firestoreCrudService";
 import {Challenge} from "../../models/Activity";
+import firestoreHooks from "../../hooks/firestoreHooks";
 
 
 export const Challenge30DayPage = () => {
 
     const {challengeId} = useParams<{ challengeId: string }>();
-    const {value, onUpdate} = useCrudQuery<Challenge>(challengeId, firestoreCrudService('challenges'))
+    const {value, onUpdate} = firestoreHooks.useUserChallenge(challengeId);
     const challenge: Challenge = value || {id: challengeId, name: ''};
     const start = challenge.start || new Date()
     const checkIndex = challenge.checkIndex || 0;

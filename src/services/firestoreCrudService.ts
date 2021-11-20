@@ -43,10 +43,13 @@ export const firestoreCrudService = <T extends {
         readAll: async function () {
             const e: T[] = [];
             const snapshot = await getDocs(collection(db, col));
-            snapshot.forEach((doc) => e.push({
-                ...doc.data(),
-                id: doc.id,
-            } as T));
+            snapshot.forEach((doc) => {
+                console.log(doc);
+                return e.push({
+                    ...doc.data(),
+                    id: doc.id,
+                } as T);
+            });
             if (!!compare) e.sort(compare);
             return successResponse(e);
         },

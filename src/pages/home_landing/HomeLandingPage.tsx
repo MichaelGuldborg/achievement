@@ -1,10 +1,8 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import {Challenge} from "../../models/Activity";
 import bg from "../community/pexels-julia-volk-6062504.jpg";
-import {useCrudListQuery} from "../../hooks/useCrudListQuery";
-import {firestoreCrudService} from "../../services/firestoreCrudService";
 import {ChallengeListItem} from "../challenges/ChallengeListItem";
+import firestoreHooks from "../../hooks/firestoreHooks";
 
 
 // TODO
@@ -29,19 +27,7 @@ import {ChallengeListItem} from "../challenges/ChallengeListItem";
 
 export const HomeLandingPage = () => {
 
-    const {elements} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', (a, b) => {
-        if (a.updatedAt === undefined && b.updatedAt === undefined) return 0;
-        if (a.updatedAt === undefined) return 1;
-        if (b.updatedAt === undefined) return -1;
-
-        if (a.updatedAt > b.updatedAt) {
-            return -1;
-        }
-        if (b.updatedAt > a.updatedAt) {
-            return 1;
-        }
-        return 0;
-    }));
+    const {elements} = firestoreHooks.useUserChallenges();
 
     return (
         <div style={{

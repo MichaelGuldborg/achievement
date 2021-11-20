@@ -2,12 +2,19 @@ import {RegisterUserRequest} from "../pages/auth/RegisterUserForm";
 import RestResponse, {errorResponse, successResponse} from "../models/RestResponse";
 import User from "../models/User";
 import {db, firebaseAuth} from "./firebase";
-import {createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword} from "firebase/auth"
+import {
+    createUserWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signInAnonymously,
+    signInWithEmailAndPassword
+} from "firebase/auth"
 import {doc, getDoc, setDoc} from "firebase/firestore";
+import {randomId} from "../lib/math/randomId";
 
 export interface AuthServiceType {
     registerWithEmail: (request: RegisterUserRequest) => RestResponse<Required<User>>;
     signInWithEmail: (email: string, password: string) => RestResponse<Required<User>>;
+    signInAnonymously: () => RestResponse<Required<User>>;
     forgotPassword: (email: string) => RestResponse<undefined>;
     resetPassword: (password: string, token: string) => RestResponse<undefined>;
 }
@@ -48,6 +55,24 @@ export const auth: AuthServiceType = {
                 message: 'User not found',
             })
         }
+
+        return successResponse(user);
+    },
+    signInAnonymously: async () => {
+        const response = await signInAnonymously(firebaseAuth);
+        console.log("response")
+        console.log(response)
+        const currentUserId = response.user.uid;
+        const user: User = {
+            id: currentUserId,
+            firstName: 'Anonymous',
+            lastName: randomId(),
+            email: "",
+            phoneNumber: "",
+        }
+
+        await setDoc(doc(db, "users", currentUserId), user)
+
 
         return successResponse(user);
     },

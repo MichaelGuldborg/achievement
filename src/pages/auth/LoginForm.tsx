@@ -61,15 +61,34 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
 
     };
 
+    const onSkip = async () => {
+        const response = await auth.signInAnonymously();
+
+        if (response.success) {
+            history.push(Routes.home)
+        }
+    };
+
 
     return (
         <Formik<LoginFormValues> onSubmit={onSubmit} initialValues={{
             email: '',
             password: '',
         }}>
-            {({errors, values, touched, }) => (
+            {({errors, values, touched,}) => (
                 <Form>
-                    <h2>Login</h2>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        alignItems: 'baseline',
+                    }}>
+                        <h2 style={{flex: 1, margin: 0}}>Login</h2>
+                        <Tooltip title={'Login anonymously'}>
+                            <Button style={{padding: 0}} color="primary" onClick={onSkip}>
+                                Skip
+                            </Button>
+                        </Tooltip>
+                    </div>
                     <Field
                         as={TextField}
                         error={errors.email && touched.email && values.email.length !== 0}
@@ -158,7 +177,7 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
                         <Button color="primary" onClick={() => {
                             history.push(Routes.register)
                         }}>
-                            Register a user?
+                            Register a new user?
                         </Button>
                     </div>
                 </Form>

@@ -1,8 +1,5 @@
 import React from "react";
 import {useParams} from "react-router-dom";
-import {useCrudQuery} from "../../hooks/useCrudQuery";
-import {firestoreCrudService} from "../../services/firestoreCrudService";
-import {Challenge} from "../../models/Activity";
 import {activityLevelMap} from "../../data/activities";
 import {Button} from "@material-ui/core";
 import history from "../../history";
@@ -11,18 +8,19 @@ import Banner from "./Banner";
 import {subtitleFromChallenge} from "./ChallengeListPage";
 import CheckIcon from "./CheckIcon";
 import theme from "../../constants/theme";
+import firestoreHooks from "../../hooks/firestoreHooks";
 
 
 export const ChallengePage = () => {
 
     const {challengeId} = useParams<{ challengeId: string }>();
-    const {value} = useCrudQuery<Challenge>(challengeId, firestoreCrudService('challenges'))
+    const {value} = firestoreHooks.useUserChallenge(challengeId);
 
     if (!value) {
         return (
             <div style={{width: '100vw', backgroundColor: 'white'}}>
                 <div style={{height: 56, backgroundColor: '#F7F7F7'}}/>
-                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vw'}}>
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh'}}>
                     Challenge could not be found
                 </div>
             </div>

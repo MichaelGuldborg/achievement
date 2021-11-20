@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import BasePageToolbar, {CreateButton} from "../../components/containers/BasePageToolbar";
 import {useCrudListQuery} from "../../hooks/useCrudListQuery";
-import {challenges} from "../../data/challenges";
 import {Challenge} from "../../models/Activity";
 import CrudDialog from "../../components/dialogs/CrudDialog";
 import ChallengeForm from "./ChallengeForm";
@@ -12,35 +11,14 @@ import capitalize from "@material-ui/core/utils/capitalize";
 import {ChallengeListItem} from "./ChallengeListItem";
 import history from "../../history";
 import Routes from "../../constants/Routes";
-import {activityLevelMap} from "../../data/activities";
+import firestoreHooks from "../../hooks/firestoreHooks";
 
 export const ChallengeListPage = () => {
 
-    const {elements, selected, setSelected, submitButtonRef, onCreate, onUpdate, onDelete,} = useCrudListQuery<Challenge>(firestoreCrudService('challenges', (a: Challenge, b: Challenge) => {
-        // sort non-checked first
-        if (a.checked && !b.checked) {
-            return 1;
-        }
-        if (b.checked && !a.checked) {
-            return -1;
-        }
-        // sort with level first
-        if (a.level && !b.level) {
-            return -1;
-        }
-        if (b.level && !a.level) {
-            return 1;
-        }
-        // sort by level index
-        if (a.level && b.level) {
-            const levelIndexA = activityLevelMap[a.level].index;
-            const levelIndexB = activityLevelMap[b.level].index;
-            if (levelIndexA > levelIndexB) return 1;
-            if (levelIndexA < levelIndexB) return -1;
-        }
-        // sort alphabetically by name
-        return a.name.localeCompare(b.name);
-    }));
+
+    const {elements, selected, setSelected, submitButtonRef, onSet, onCreate, onUpdate, onDelete,} = firestoreHooks.useUserChallenges();
+
+    const {elements: temp} = useCrudListQuery<Challenge>(firestoreCrudService('challenges'));
 
     const [search, setSearch] = useState<string>('');
     const [filter, setFilter] = useState<{ [key: string]: any }>({

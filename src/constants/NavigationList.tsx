@@ -5,12 +5,12 @@ import {RemixiconReactIconComponentType} from "remixicon-react";
 import ProfilePage from "../pages/ProfilePage";
 import HomeLineIcon from "remixicon-react/HomeLineIcon";
 import HomeLandingPage from "../pages/home_landing/HomeLandingPage";
-import ActivityPage from "../pages/activity/ActivityPage";
-import Challenge30DayPage from "../pages/challenges/Challenge30DayPage";
 import LifeMapPage from "../pages/lifemap/LifeMapPage";
 import RoutinePage from "../pages/habits/RoutinePage";
-import AgendaPage from '../pages/AgendaPage';
 import ChallengeListPage from "../pages/challenges/ChallengeListPage";
+import CheckLineIcon from "remixicon-react/CheckLineIcon";
+import RepeatLineIcon from "remixicon-react/RepeatLineIcon";
+import Map2LineIcon from "remixicon-react/Map2LineIcon";
 
 export interface ActionNavItem {
     name: string;
@@ -48,7 +48,7 @@ export const navigationList: NavItem[] = [
     },
     {
         name: "Challenges",
-        icon: HomeLineIcon,
+        icon: CheckLineIcon,
         path: Routes.challenges,
         component: ChallengeListPage,
     },
@@ -60,13 +60,13 @@ export const navigationList: NavItem[] = [
     // },
     {
         name: "Routine",
-        icon: HomeLineIcon,
+        icon: RepeatLineIcon,
         path: Routes.habits,
         component: RoutinePage,
     },
     {
-        name: "Storyline",
-        icon: HomeLineIcon,
+        name: "Life map",
+        icon: Map2LineIcon,
         path: Routes.lifeMap,
         component: LifeMapPage,
     },

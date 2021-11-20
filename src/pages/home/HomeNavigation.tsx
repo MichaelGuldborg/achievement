@@ -42,6 +42,7 @@ export const HomeNavigation: React.FC<DashboardDrawerProps> = () => {
         }}>
             <Hidden smDown>
                 <div style={{
+                    width: '100%',
                     display: 'flex',
                     alignItems: 'center',
                     padding: '0px 16px',
@@ -49,17 +50,30 @@ export const HomeNavigation: React.FC<DashboardDrawerProps> = () => {
                     {navigationList.map((item) => {
                             // const isCurrentPath = !!item.path && !!matchPath(currentPath, {path: item.path});
                             return (
-                                <Button
-                                    key={item.path}
-                                    onClick={() => history.push(item.path)}
-                                    color={"primary"}
-                                    variant={"text"}
-                                >
-                                    {item.name}
-                                </Button>
+                                <div style={{marginRight: 8}}>
+                                    <Button
+                                        key={item.path}
+                                        color={"primary"}
+                                        variant={"outlined"}
+                                        onClick={() => history.push(item.path)}
+                                    >
+                                        {item.name}
+                                    </Button>
+                                </div>
                             );
                         }
                     )}
+                    <div style={{flex: 1}}/>
+                    <Button
+                        color={"primary"}
+                        variant={"outlined"}
+                        onClick={() => {
+                            localStorage.clear();
+                            history.push(Routes.landing)
+                        }}
+                    >
+                        Logout
+                    </Button>
                 </div>
             </Hidden>
             <Hidden mdUp>
